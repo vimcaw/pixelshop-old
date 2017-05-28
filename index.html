@@ -7,22 +7,23 @@
     <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css">
 </head>
 <body>
-    <div class="menu">
-        <ul>
+    <div class="top">
+        <ul class="menu">
             <li>
-                <span>File</span>
-                <ul class="child-menu">
-                    <li>New</li>
-                    <li>Open</li>
-                    <li>Close</li>
+                <div>File</div>
+                <ul>
+                    <li id="new">New...</li>
+                    <li id="openFromLocal">Open From Local...</li>
+                    <li id="openFromUrl">Open From URL...</li>
+                    <li id="close">Close</li>
                     <hr>
-                    <li>Save</li>
-                    <li>Save as</li>
+                    <li id="save">Save</li>
+                    <li id="save-as">Save as...</li>
                 </ul>
             </li>
             <li>
-                <span>Edit</span>
-                <ul class="child-menu">
+                <div>Edit</div>
+                <ul>
                     <li>Undo</li>
                     <li>Redo</li>
                     <hr>
@@ -31,32 +32,38 @@
                     <li>Paste</li>
                 </ul>
             </li>
+            <!--<li>-->
+                <!--<div>Image</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Layer</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Text</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Seletion</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Filter</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>View</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Windows</div>-->
+            <!--</li>-->
             <li>
-                <span>Image</span>
-            </li>
-            <li>
-                <span>Layer</span>
-            </li>
-            <li>
-                <span>Text</span>
-            </li>
-            <li>
-                <span>Seletion</span>
-            </li>
-            <li>
-                <span>Filter</span>
-            </li>
-            <li>
-                <span>View</span>
-            </li>
-            <li>
-                <span>Windows</span>
-            </li>
-            <li>
-                <span>Help</span>
+                <div>Help</div>
+                <ul>
+                    <li id="about">about...</li>
+                </ul>
             </li>
         </ul>
-        <span class="full-screen iconfont icon-quanping"></span>
+
+        <ul class="window-control">
+            <li id="full-screen" class="iconfont icon-quanping"></li>
+        </ul>
     </div>
 
     <div class="option"></div>
@@ -99,10 +106,24 @@
                 <input type="radio" name="tool" id="">
                 <label for="" class="iconfont icon-fangdajing"></label>
             </li>
-
         </ul>
     </div>
     <div class="panel"></div>
     <div class="canvas"><canvas></canvas></div>
+    <div class="windowUI-container">
+        <div class="windowUI" id="openWebPicture">
+            <p>Paste URL in here:</p>
+            <input type="text">
+            <button id="preview">Preview</button>
+            <button id="confirm">confirm</button>
+            <br>
+            <img src="" alt="">
+        </div>
+        <div class="windowUI" id="about">
+            <p>Mini Photoshop for Web V0.2.1</p>
+            <p>author: <a href="https://github.com/neoherus">neoherus</a></p>
+        </div>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>

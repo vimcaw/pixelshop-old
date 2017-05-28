@@ -5,29 +5,75 @@ body, ul, li{
 body{
     background: #2c2c2c;
     color: #f0f0f0;
+    overflow: hidden;
 }
-.menu, .option, .tool, .panel{
+
+@keyframes twinkleBorder {
+    from {
+        border-color: #ff3e3e;
+    }
+    to {
+        border-color: #2c2c2c;
+    }
+}
+
+@keyframes twinkleTitle {
+    from {
+        background-color: #fff;
+    }
+    to {
+        background-color: #2c2c2c;
+    }
+}
+
+/*Common Style*/
+.hide{
+    display: none;
+}
+.block-all{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+.twinkle-border{
+    animation: .15s twinkleBorder;
+    animation-iteration-count: 6;
+}
+.twinkle-title{
+    animation: .15s twinkleTitle;
+    animation-iteration-count: 6;
+}
+/*全局样式*/
+.top, .menu, .option, .tool, .panel{
     background: #535353;
 }
-.menu:hover, .option:hover, .tool:hover, .panel:hover{
+.top:hover, .option:hover, .tool:hover, .panel:hover, .windowUI{
     position: relative;
     box-shadow: 2px 2px 40px #000000;
     z-index: 5;
 }
-.menu>ul{
+
+/*一级菜单*/
+ul.menu{
     margin-left: 20px;
 }
-.menu>ul>li{
+ul.menu>li{
     position: relative;
     display: inline-block;
     padding: 5px 10px;
     list-style-type: none;
 }
-.menu>ul>li:hover{
+ul.menu>li:hover{
     background: #2c2c2c;
     cursor: default;
 }
-.menu ul.child-menu{
+/*二级菜单、右键菜单*/
+ul.menu>li:hover ul{
+    display: block;
+}
+ul.menu ul, .context{
     display: none;
     position: absolute;
     left: 0;
@@ -38,34 +84,34 @@ body{
     box-shadow: 2px 2px 30px #000000;
     padding: 2px;
 }
-.menu ul.child-menu li{
+ul.menu ul li, .context li{
     padding: 2px 20px;
     white-space: nowrap;
 }
-.menu ul.child-menu li:hover{
+ul.menu ul li:hover, .context li:hover{
     background: #f0f0f0;
     color: #2c2c2c;
 }
-.menu>ul>li:hover .child-menu{
-    display: block;
-}
-.menu>span{
+/*窗口操作按钮*/
+.window-control li{
     display: block;
     position: absolute;
     top: 0;
     right: 0;
     padding: 4px;
 }
-.menu span:hover{
+.window-control li:hover{
     background: #2c2c2c;
 }
 
+/*选项栏*/
 .option{
     height: 30px;
     margin: 2px 0;
     background: #535353;
 }
 
+/*工具栏*/
 .tool{
     float: left;
 }
@@ -91,13 +137,73 @@ body{
     background: #2c2c2c;    /* hack hover bug */
 }
 
+/*画布*/
 .canvas{
-
+    position: relative;
+    height: 100%;
+    margin: 0 303px 0 36px;
+    z-index: -1;
+}
+.canvas canvas{
+    position: absolute;
 }
 
+/*面板*/
 .panel{
     float: right;
     width: 300px;
     height: 400px;
     background: #535353;
+}
+
+/*窗口*/
+.windowUI{
+    display: none;
+    position: absolute;
+    padding: 10px;
+    padding-top: 40px;
+    background: #535353;
+    border: 1px solid #6a6a6a;
+    z-index: 500;
+}
+.windowUI *{
+    margin: 5px;
+}
+
+.windowUI .title-bar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 100%;
+    height: 30px;
+    background: #2c2c2c;
+    overflow: hidden;
+    cursor: default;
+}
+.windowUI .title-bar>p{
+    position: absolute;
+    margin: 0;
+    padding-left: 15px;
+    line-height: 30px;
+}
+.windowUI .title-bar .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0 20px;
+    line-height: 30px;
+    transition: all .6s;
+}
+.windowUI .title-bar .close::before{
+    content: '\2716';
+}
+.windowUI .title-bar .close:hover{
+    background: #ff3e36;
+}
+
+/*自定义样式*/
+#about{
+    text-align: center;
 }
