@@ -8,13 +8,13 @@
 
 ### 进度
 * 2017-5-28 V0.2.1
-1. 基本完成了windowU I组件
-2. 基本完成了open from url 功能
+  1. 基本完成了window UI 组件
+  2. 基本完成了open from url 功能
 
 * 2017-5-26 基本 UI 绘制
 
 ## English intro
-[跳转至中文](/)
+[跳转至中文](#中文介绍)
 
 "Mini Photoshop for Web" realized by JavaScript, it is a small Photoshop application, which contains the most commonly used photoshop features.
 
