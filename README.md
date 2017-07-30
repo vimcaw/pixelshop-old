@@ -5,7 +5,7 @@
 
 “Mini Photoshop for Web” 由原生 JavaScript 实现，是一个小型的 Photoshop，它包含了 Photoshop 最常用的功能。
 
-预览：https://vimdaw.github.io/MiniPhotoshop-ForWeb/
+预览：https://vimcaw.github.io/MiniPhotoshop-ForWeb/
 
 ### 进度
 >  2017-5-28 ---------- V0.2.1
@@ -23,7 +23,7 @@
 
 "Mini Photoshop for Web" realized by JavaScript, it is a small Photoshop application, which contains the most commonly used photoshop features.
 
-preview: https://vimdaw.github.io/MiniPhotoshop-ForWeb/
+preview: https://vimcaw.github.io/MiniPhotoshop-ForWeb/
 
 
 ### progress

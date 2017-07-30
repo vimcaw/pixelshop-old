@@ -1,11 +1,12 @@
-body, ul, li{
-    margin: 0;
-    padding: 0;
-}
 body{
     background: #2c2c2c;
     color: #f0f0f0;
     overflow: hidden;
+    font-size: 14px;
+}
+
+a, a:visited{
+    color: #9bb5e3;
 }
 
 @keyframes twinkleBorder {
@@ -46,52 +47,17 @@ body{
     animation-iteration-count: 6;
 }
 /*全局样式*/
-.top, .menu, .option, .tool, .panel{
+.top, .option, .tool, .panel{
+    position: relative;
     background: #535353;
+    z-index: 30;
 }
-.top:hover, .option:hover, .tool:hover, .panel:hover, .windowUI{
+.top:hover, .option:hover, .tool:hover, .panel:hover, .window{
     position: relative;
     box-shadow: 2px 2px 40px #000000;
-    z-index: 5;
+    z-index: 50;
 }
 
-/*一级菜单*/
-ul.menu{
-    margin-left: 20px;
-}
-ul.menu>li{
-    position: relative;
-    display: inline-block;
-    padding: 5px 10px;
-    list-style-type: none;
-}
-ul.menu>li:hover{
-    background: #2c2c2c;
-    cursor: default;
-}
-/*二级菜单、右键菜单*/
-ul.menu>li:hover ul{
-    display: block;
-}
-ul.menu ul, .context{
-    display: none;
-    position: absolute;
-    left: 0;
-    background: #535353;
-    color: #f0f0f0;
-    list-style-type: none;
-    border: 1px solid #6a6a6a;
-    box-shadow: 2px 2px 30px #000000;
-    padding: 2px;
-}
-ul.menu ul li, .context li{
-    padding: 2px 20px;
-    white-space: nowrap;
-}
-ul.menu ul li:hover, .context li:hover{
-    background: #f0f0f0;
-    color: #2c2c2c;
-}
 /*窗口操作按钮*/
 .window-control li{
     display: block;
@@ -108,15 +74,35 @@ ul.menu ul li:hover, .context li:hover{
 .option{
     height: 30px;
     margin: 2px 0;
+    padding-left: 5px;
     background: #535353;
+    font-size: 14px;
+}
+.option #current-tool{
+
+}
+.option div{
+    display: inline-block;
+}
+.option *{
+    display: inline;
+    margin: 0 5px;
+    padding: 0;
+    line-height: 30px;
+}
+
+/*底部区域容器*/
+.bottom-container{
+    overflow: hidden;
 }
 
 /*工具栏*/
 .tool{
     float: left;
+    width: 32px;
+    height: 100%;
 }
 .tool ul{
-    height: 100%;
     list-style-type: none;
 }
 .tool input{
@@ -124,6 +110,7 @@ ul.menu ul li:hover, .context li:hover{
 }
 .tool ul li label{
     display: inline-block;
+    font-size: 14px;
     padding: 5px;
     margin: 3px;
 }
@@ -138,69 +125,59 @@ ul.menu ul li:hover, .context li:hover{
 }
 
 /*画布*/
-.canvas{
-    position: relative;
+.drawing-container{
     height: 100%;
-    margin: 0 303px 0 36px;
-    z-index: -1;
+    margin: 0 302px 0 34px;
+    z-index: 1;
+    overflow: hidden;
 }
-.canvas canvas{
-    position: absolute;
+.drawing-container ul.title-bar{
+    height: 26px;
+    margin-bottom: 2px;
+    list-style-type: none;
+    background: #3b3b3b;
+}
+.drawing-container ul.title-bar li{
+    display: inline-block;
+    background: #535353;
+    cursor: default;
+}
+.drawing-container ul.title-bar li span{
+    font-size: 12px;
+    margin: 5px 10px;
+}
+.drawing-container ul.title-bar li .close{
+    padding: 2px;
+    margin-left: 0;
+    vertical-align: middle;
+}
+.drawing-container ul.title-bar li .close:hover{
+    background: #ff5458;
+    border-radius: 50%;
+}
+.drawing-container canvas{
+    transform-origin: 0 0;
+}
+.drawing-container .drawing{
+    width: 100%;
+    height: 92%;
+    overflow: scroll;
+}
+.drawing-container .status{
+    width: 100%;
+    height: 20px;
+    font-size: 12px;
+    line-height: 20px;
+    background: #535353;
+    padding-left: 10px;
+    margin-top: 3px;
 }
 
 /*面板*/
-.panel{
+.panel-group{
     float: right;
     width: 300px;
     height: 400px;
-    background: #535353;
-}
-
-/*窗口*/
-.windowUI{
-    display: none;
-    position: absolute;
-    padding: 10px;
-    padding-top: 40px;
-    background: #535353;
-    border: 1px solid #6a6a6a;
-    z-index: 500;
-}
-.windowUI *{
-    margin: 5px;
-}
-
-.windowUI .title-bar{
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 0;
-    width: 100%;
-    height: 30px;
-    background: #2c2c2c;
-    overflow: hidden;
-    cursor: default;
-}
-.windowUI .title-bar>p{
-    position: absolute;
-    margin: 0;
-    padding-left: 15px;
-    line-height: 30px;
-}
-.windowUI .title-bar .close{
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0 20px;
-    line-height: 30px;
-    transition: all .6s;
-}
-.windowUI .title-bar .close::before{
-    content: '\2716';
-}
-.windowUI .title-bar .close:hover{
-    background: #ff3e36;
 }
 
 /*自定义样式*/

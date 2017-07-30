@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Mini Photoshop For Web</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="windowsUI.css">
     <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="top">
@@ -12,13 +14,13 @@
             <li>
                 <div>File</div>
                 <ul>
-                    <li id="new">New...</li>
-                    <li id="openFromLocal">Open From Local...</li>
-                    <li id="openFromUrl">Open From URL...</li>
-                    <li id="close">Close</li>
+                    <li id="menu-new">New...</li>
+                    <li id="menu-openFromLocal">Open From Local...</li>
+                    <li id="menu-openFromUrl">Open From URL...</li>
+                    <li id="menu-close">Close</li>
                     <hr>
-                    <li id="save">Save</li>
-                    <li id="save-as">Save as...</li>
+                    <li id="menu-save">Save</li>
+                    <li id="menu-save-as">Save as...</li>
                 </ul>
             </li>
             <li>
@@ -56,7 +58,7 @@
             <li>
                 <div>Help</div>
                 <ul>
-                    <li id="about">about...</li>
+                    <li id="tool-about">about...</li>
                 </ul>
             </li>
         </ul>
@@ -66,52 +68,80 @@
         </ul>
     </div>
 
-    <div class="option"></div>
-
-    <div class="tool">
-        <ul>
-            <li>
-                <input type="radio" name="tool" id="move" checked>
-                <label for="move" class="iconfont icon-yidong"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="crop">
-                <label for="crop" class="iconfont icon-tupiancaijian"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="straw">
-                <label for="straw" class="iconfont icon-icon-straw"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="blush">
-                <label for="blush" class="iconfont icon-icon"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="">
-                <label for="" class="iconfont icon-xiangpi"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="">
-                <label for="" class="iconfont icon-wenben"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="">
-                <label for="" class="iconfont icon-juxing"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="">
-                <label for="" class="iconfont icon-hand"></label>
-            </li>
-            <li>
-                <input type="radio" name="tool" id="">
-                <label for="" class="iconfont icon-fangdajing"></label>
-            </li>
-        </ul>
+    <div class="option">
+        <span id="current-tool"></span>
+        <div for="option-blush">
+            <span>size: </span><input type="range" min="1" max="200" step="1">
+        </div>
     </div>
-    <div class="panel"></div>
-    <div class="canvas"><canvas></canvas></div>
-    <div class="windowUI-container">
-        <div class="windowUI" id="openWebPicture">
+
+    <div class="bottom-container">
+        <div class="tool">
+            <ul>
+                <li>
+                    <input type="radio" name="tool" id="tool-move" checked>
+                    <label for="tool-move" class="iconfont icon-yidong"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-crop">
+                    <label for="tool-crop" class="iconfont icon-tupiancaijian"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-straw">
+                    <label for="tool-straw" class="iconfont icon-icon-straw"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-blush">
+                    <label for="tool-blush" class="iconfont icon-icon"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-eraser">
+                    <label for="tool-eraser" class="iconfont icon-xiangpi"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-text">
+                    <label for="tool-text" class="iconfont icon-wenben"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-rect">
+                    <label for="tool-rect" class="iconfont icon-juxing"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-hand">
+                    <label for="tool-hand" class="iconfont icon-hand"></label>
+                </li>
+                <li>
+                    <input type="radio" name="tool" id="tool-magnifier">
+                    <label for="tool-magnifier" class="iconfont icon-fangdajing"></label>
+                </li>
+            </ul>
+        </div>
+        <div class="panel-group">
+            <div class="panel" id="info">
+                <p>X: <span id="pos-x"></span></p>
+                <p>Y: <span id="pos-y"></span></p>
+                <p>color: <span id="color"></span></p>
+            </div>
+        </div>
+
+        <div class="drawing-container">
+            <ul class="title-bar">
+                <li>
+                    <span class="drawing-title"></span>
+                    <span class="fa fa-times close"></span>
+                </li>
+            </ul>
+            <div class="drawing"><canvas></canvas></div>
+            <div class="status">
+                <span class="canvas-size"></span>
+                @
+                <span class="canvas-scale"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="window-container">
+        <div class="window" id="openWebPicture">
             <p>Paste URL in here:</p>
             <input type="text">
             <button id="preview">Preview</button>
@@ -119,11 +149,13 @@
             <br>
             <img src="" alt="">
         </div>
-        <div class="windowUI" id="about">
+        <div class="window" id="about">
             <p>Mini Photoshop for Web V0.2.1</p>
             <p>author: <a href="https://github.com/neoherus">neoherus</a></p>
         </div>
     </div>
+    <script src="common.js"></script>
+    <script src="windowsUI.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
