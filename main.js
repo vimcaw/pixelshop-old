@@ -37,6 +37,10 @@ function limitImageSize($img, maxWidth, maxHeight) {
 
 var commandSet = {
 	openFromLocal: function () {
+		if (!FileReader) {
+			var windowError = windowUIList.canNotReadLocalFile;
+			return windowError.open();
+		}
 		var inpFile = document.createElement('input');
 		inpFile.type = 'file';
 		inpFile.className = 'hide';
@@ -44,7 +48,11 @@ var commandSet = {
 		inpFile.click();
 		inpFile.onchange = function () {
 			if (this.value) {
-				canvas.load(this.value);
+				var reader = new FileReader();
+				reader.readAsDataURL(this.files[0]);
+				reader.onload = function() {
+					drawing.load(this.result);
+				}
 			}
 		};
 	},

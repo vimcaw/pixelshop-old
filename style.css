@@ -184,3 +184,14 @@ a, a:visited{
 #about{
     text-align: center;
 }
+
+#canNotReadLocalFile{
+    width: 500px;
+}
+#canNotReadLocalFile span{
+    float: left;
+    font-size: 9em;
+}
+#canNotReadLocalFile ul, #canNotReadLocalFile h2{
+    clear: both;
+}

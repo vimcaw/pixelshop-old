@@ -1,23 +1,5 @@
 # MiniPhotoshop-ForWeb
 
-## 中文介绍
-[Go to English](#english-intro)
-
-“Mini Photoshop for Web” 由原生 JavaScript 实现，是一个小型的 Photoshop，它包含了 Photoshop 最常用的功能。
-
-预览：https://vimcaw.github.io/MiniPhotoshop-ForWeb/
-
-### 进度
->  2017-5-28 ---------- V0.2.1
-> 1. 基本完成了window UI 组件
-> 2. 基本完成了open from url 功能
-
-> 2017-5-26 ---------- V0.1.0 基本 UI 绘制
-
--------------------
-
--------------------
-
 ## English intro
 [跳转至中文](#中文介绍)
 
@@ -27,4 +9,25 @@ preview: https://vimcaw.github.io/MiniPhotoshop-ForWeb/
 
 
 ### progress
-> 2017-5-26 ---------- V0.1.0 basic UI
+
+> 2017-8-5 ----------- V0.2.2 realize "Open from local..." menu item
+
+> 2017-5-28 ---------- V0.2.1 
+> 1. realize basic "window UI" module
+> 2. realize "Open from url..." menu item
+> 3. realize picture display
+
+> 2017-5-26 ---------- V0.1.0 realize basic UI
+
+
+-------------------
+
+-------------------
+
+
+## 中文介绍
+[Go to English](#english-intro)
+
+“Mini Photoshop for Web” 由原生 JavaScript 实现，是一个小型的 Photoshop，它包含了 Photoshop 最常用的功能。
+
+预览：https://vimcaw.github.io/MiniPhotoshop-ForWeb/
