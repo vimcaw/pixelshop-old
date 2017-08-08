@@ -57,6 +57,12 @@ a, a:visited{
     box-shadow: 2px 2px 40px #000000;
     z-index: 50;
 }
+::-webkit-scrollbar, ::-webkit-scrollbar-corner{
+    background: #3b3b3b;
+}
+::-webkit-scrollbar-thumb{
+    background: #535353;
+}
 
 /*窗口操作按钮*/
 .window-control li{

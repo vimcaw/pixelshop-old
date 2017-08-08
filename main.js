@@ -1,5 +1,5 @@
 /**
- * Created by neoherus on 2017/5/27.
+ * Created by vimcaw on 2017/5/27.
  */
 
 function getlimitSize($img, maxWidth, maxHeight) {
@@ -48,10 +48,11 @@ var commandSet = {
 		inpFile.click();
 		inpFile.onchange = function () {
 			if (this.value) {
-				var reader = new FileReader();
-				reader.readAsDataURL(this.files[0]);
+				var reader = new FileReader(),
+					file = this.files[0];
+				reader.readAsDataURL(file);
 				reader.onload = function() {
-					drawing.load(this.result);
+					drawing.load(this.result, file.name);
 				}
 			}
 		};
@@ -73,7 +74,22 @@ var commandSet = {
 		};
 	},
 	save: function () {
-	
+		var downloader = document.createElement('a'),
+			imageName = '',
+			imageFormat = '',
+			format = {
+				png: 'png',
+				jpg: 'jpeg',
+				webp: 'webp'
+			};
+		imageName = drawing.fileName;
+		var result = drawing.fileName.match(/\..+/g);
+		imageFormat = result && result[result.length - 1].substring(1);
+		downloader.download = imageName;
+
+		downloader.href = drawing.$canvas.toDataURL('image/' + format[imageFormat]);
+		document.body.appendChild(downloader);
+		downloader.click();
 	},
 	about: function () {
 		windowUIList.about.open();
@@ -122,24 +138,27 @@ var drawing = (function () {
 		context = $canvas.getContext('2d'),
 		$title = $('.drawing-title')[0],
 		$size = $('.canvas-size')[0],
-		$scale = $('.canvas-scale')[0];
+		$scale = $('.canvas-scale')[0],
+		fileName = '';
 	
 	var scaleRate = 1;
 	
 	function scaleAdd(addition, x, y) {
-		if (addition !== undefined) {
+		if (addition && typeof addition === 'number') {
+			var oldScaleRate = scaleRate;
 			scaleRate += addition;
 			if (scaleRate >= 10) {
 				scaleRate = 10;
 			} else if (scaleRate <= 0.2) {
 				scaleRate = 0.2;
 			}
+			$canvas.style.transform = 'scale(' + scaleRate + ')';
+			$scale.innerText = ((scaleRate * 100).toFixed(2)) + '%';
 			if (x && y) {
-				$canvas.style.transformOrigin = x + 'px ' + y + 'px';
+				$drawing.scrollLeft = scaleRate * ($drawing.scrollLeft + x) / oldScaleRate - x;
+				$drawing.scrollTop = scaleRate * ($drawing.scrollTop + y) / oldScaleRate - y;
 			}
 		}
-		$canvas.style.transform = 'scale(' + scaleRate + ')';
-		$scale.innerText = ((scaleRate * 100).toFixed(2)) + '%';
 	}
 	
 	function setCenter () {
@@ -178,16 +197,20 @@ var drawing = (function () {
 	});
 	
 	return {
-		load: function (src) {
+		$canvas: $canvas,
+		fileName: fileName,
+		load: function (src, fileName) {
 			var image = new Image();
 			image.src = src;
-			$title.innerText = getUrlFileName(src);
+			drawing.fileName = fileName ? fileName : getUrlFileName(src);
+			$title.innerText = drawing.fileName;
 			
 			var _this = this;
 			image.onload = function () {
 				$canvas.width = image.width;
 				$canvas.height = image.height;
 				$size.innerText = image.width + '×' + image.height;
+				$scale.innerText = '100%';
 					// var size = getlimitSize(image, 800, 500);
 				// scaleRate = size.width / $canvas.width;
 				context.drawImage(image, 0, 0);
@@ -206,13 +229,12 @@ var drawing = (function () {
 
 var option = (function () {
 	var $option = $('.option')[0],
-		$currentOption = null;
-		$currentTool = $('#current-tool');
-	
+		$currentOption = null,
+		$currentToolDisplay = $('#current-tool');
 	return {
-		switchTool: function (toolId) {
-			var $tool = $('label[for="tool-' + toolId + '"]')[0];
-			$currentTool.className = $tool.className;
+		switchOption: function (toolId) {
+			var $toolLabel = $('label[for="tool-' + toolId + '"]')[0];
+			$currentToolDisplay.className = $toolLabel.className;
 			if ($currentOption) {
 				$currentOption.style.display = 'none';
 			}
@@ -221,16 +243,28 @@ var option = (function () {
 				$currentOption.style.display = 'inline-block';
 			}
 		}
-	};
+	}
 })();
 
 var tool = (function () {
 	var $currentTool = getRadioCheckedElement('tool');
-	option.switchTool(getIdSuffix($currentTool.id));
+
+	function switchTool(toolId) {
+		currentTool = toolId;
+		option.switchOption(toolId);
+	}
+
+	switchTool(getIdSuffix($currentTool.id));
+
 	listenRadioChange('tool', function () {
 		$currentTool = this;
-		option.switchTool(getIdSuffix(this.id));
+		switchTool(getIdSuffix(this.id));
 	});
+
+	return {
+		currentTool: '',
+		switchTool: switchTool
+	};
 })();
 
 (function init() {
