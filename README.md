@@ -3,9 +3,11 @@
 ## English intro
 [跳转至中文](#中文介绍)
 
-"Mini Photoshop for Web" realized by JavaScript, it is a small Photoshop application, which contains the most commonly used photoshop features.
+Pixelshop is A small Photoshop, JavaScript-based web application, which contains the most commonly used Photoshop features.
 
-preview: https://vimcaw.github.io/MiniPhotoshop-ForWeb/
+This Project is developing, because I just spend spare time, I predict it will acomplish main function at Dec, 2017.
+
+preview: https://vimcaw.github.io/Pixelshop/
 
 
 ### progress
@@ -28,6 +30,8 @@ preview: https://vimcaw.github.io/MiniPhotoshop-ForWeb/
 ## 中文介绍
 [Go to English](#english-intro)
 
-“Mini Photoshop for Web” 由原生 JavaScript 实现，是一个小型的 Photoshop，它包含了 Photoshop 最常用的功能。
+Pixelshop 是一个小型的 Photoshop，由原生 JavaScript 实现，它包含了 Photoshop 最常用的功能。
 
-预览：https://vimcaw.github.io/MiniPhotoshop-ForWeb/
+此项目目前还在开发中，由于只花费业余时间进行开发，预计 2017 年 12 月完成主要功能。
+
+预览：https://vimcaw.github.io/Pixelshop/
