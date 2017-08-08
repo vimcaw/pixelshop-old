@@ -15,7 +15,7 @@ preview: https://vimcaw.github.io/Pixelshop/
 > * This project "Mini Photoshop For Web" was renamed "Pixelshop".
 > * Changed style of scroll bar, it fit overall style now.
 > * Realized "Save" menu item.
-> * improve scaling of drawing.
+> * improved scaling of drawing.
 
 > 2017-8-5 ----------- V0.2.2
 > * Realized "Open from local..." menu item
