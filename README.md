@@ -5,7 +5,7 @@
 
 Pixelshop is A small Photoshop, JavaScript-based web application, which contains the most commonly used Photoshop features.
 
-> This Project is developing, because I just spend spare time, I predict it will acomplish main function on Dec, 2017.
+> This Project is developing, because I just spend spare time, I predict it will acomplish main function in Dec, 2017.
 
 preview: https://vimcaw.github.io/Pixelshop/
 
