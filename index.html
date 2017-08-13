@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mini Photoshop For Web</title>
+    <title>Pixelshop - a small JavaScript-based Photoshop</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="windowsUI.css">
     <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css">
@@ -19,8 +19,8 @@
                     <li id="menu-openFromUrl">Open From URL...</li>
                     <li id="menu-close">Close</li>
                     <hr>
-                    <li id="menu-save">Save</li>
-                    <li id="menu-save-as">Save as...</li>
+                    <li id="menu-save" class="disabled">Save</li>
+                    <li id="menu-saveAs" class="disabled">Save as...</li>
                 </ul>
             </li>
             <li>
@@ -69,8 +69,8 @@
     </div>
 
     <div class="option">
-        <span id="current-tool"></span>
-        <div for="option-blush">
+        <span id="current-tool" class="iconfont icon-yidong checked"></span>
+        <div id="option-blush">
             <span>size: </span><input type="range" min="1" max="200" step="1">
         </div>
     </div>
@@ -78,43 +78,20 @@
     <div class="bottom-container">
         <div class="tool">
             <ul>
-                <li>
-                    <input type="radio" name="tool" id="tool-move" checked>
-                    <label for="tool-move" class="iconfont icon-yidong"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-crop">
-                    <label for="tool-crop" class="iconfont icon-tupiancaijian"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-straw">
-                    <label for="tool-straw" class="iconfont icon-icon-straw"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-blush">
-                    <label for="tool-blush" class="iconfont icon-icon"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-eraser">
-                    <label for="tool-eraser" class="iconfont icon-xiangpi"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-text">
-                    <label for="tool-text" class="iconfont icon-wenben"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-rect">
-                    <label for="tool-rect" class="iconfont icon-juxing"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-hand">
-                    <label for="tool-hand" class="iconfont icon-hand"></label>
-                </li>
-                <li>
-                    <input type="radio" name="tool" id="tool-magnifier">
-                    <label for="tool-magnifier" class="iconfont icon-fangdajing"></label>
-                </li>
-            </ul>
+                <li><div id="tool-move" class="iconfont icon-yidong checked" title="Move tool"></div></li>
+                <li><div id="tool-crop" class="iconfont icon-tupiancaijian" title="Crop tool"></div></li>
+                <li><div id="tool-straw" class="iconfont icon-icon-straw" title="Eyedropper tool"></div></li>
+                <li><div id="tool-blush" class="iconfont icon-icon" title="Blush tool"></div></li>
+                <li><div id="tool-eraser" class="iconfont icon-xiangpi" title="Eraser tool"></div></li>
+                <li><div id="tool-text" class="iconfont icon-wenben" title="Text tool"></div></li>
+                <li><div id="tool-rect" class="iconfont icon-juxing" title="Rect tool"></div></li>
+                <li><div id="tool-grab" class="iconfont icon-hand" title="Grab tool"></div></li>
+                <li><div id="tool-magnifier" class="iconfont icon-fangdajing" title="Magnifier tool"></div></li>
+            </ul><hr>
+            <div class="color">
+                <div id="fore-color" title="Foreground color"></div>
+                <div id="back-color" title="Background color"></div>
+            </div>
         </div>
         <div class="panel-group">
             <div class="panel" id="info">
@@ -159,8 +136,8 @@
             <img src="" alt="">
         </div>
         <div class="window" id="about">
-            <p>Mini Photoshop for Web V0.2.3</p>
-            <p>HomePage: </p>
+            <p>Pixelshop V0.2.4</p>
+            <p>Github Page: <a href="https://github.com/vimcaw/Pixelshop">https://github.com/vimcaw/Pixelshop</a></p>
             <p>author: <a href="https://github.com/vimcaw">vimcaw</a></p>
         </div>
     </div>

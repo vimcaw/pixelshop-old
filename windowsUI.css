@@ -43,6 +43,13 @@ ul.menu ul li:hover, .context li:hover{
     background: #f0f0f0;
     color: #2c2c2c;
 }
+ul.menu ul li.disabled, .context li.disabled{
+    color: #8F8F8F;
+}
+ul.menu ul li.disabled:hover, .context li.disabled:hover{
+    background: #717171;
+    color: #8F8F8F;
+}
 
 /*窗口*/
 .window{

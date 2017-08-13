@@ -84,10 +84,11 @@ a, a:visited{
     background: #535353;
     font-size: 14px;
 }
-.option #current-tool{
 
-}
 .option div{
+    display: none;
+}
+.option div.actived{
     display: inline-block;
 }
 .option *{
@@ -105,29 +106,44 @@ a, a:visited{
 /*工具栏*/
 .tool{
     float: left;
-    width: 32px;
+    width: 2.4em;
     height: 100%;
 }
-.tool ul{
+.tool>ul{
     list-style-type: none;
 }
-.tool input{
-    display: none;
-}
-.tool ul li label{
+.tool>ul div{
     display: inline-block;
-    font-size: 14px;
-    padding: 5px;
-    margin: 3px;
+    font-size: 1em;
+    padding: 0.4em;
+    margin: 0.3em;
 }
-.tool ul li label:hover{
+.tool>ul div:hover{
     background: #404040;
 }
-.tool input:checked+label{
+.tool>ul div.checked{
     background: #2c2c2c;
 }
-.tool input:checked+label:hover{
-    background: #2c2c2c;    /* hack hover bug */
+.tool .color div{
+    position: absolute;
+    width: 1em;
+    height: 1em;
+}
+.tool .color{
+    position: relative;
+}
+.tool .color #fore-color{
+    left: 0.3em;
+    background: #FFFFFF;
+    border: 0.05em solid #000000;
+    z-index: 1;
+}
+.tool .color #back-color{
+    top: 0.7em;
+    right: 0.3em;
+    background: #000;
+    z-index: 0;
+    border: 0.05em solid #fff;
 }
 
 /*画布*/

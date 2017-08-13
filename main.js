@@ -2,6 +2,14 @@
  * Created by vimcaw on 2017/5/27.
  */
 
+Element.prototype.disabled = function () {
+	this.addClass('disabled');
+}
+
+Element.prototype.enable = function () {
+	this.removeClass('disabled');
+}
+
 function getlimitSize($img, maxWidth, maxHeight) {
 	var width = $img.width,
 		height = $img.height;
@@ -143,10 +151,10 @@ var drawing = (function () {
 	
 	var scaleRate = 1;
 	
-	function scaleAdd(addition, x, y) {
-		if (addition && typeof addition === 'number') {
+	function scale(increment, x, y) {
+		if (increment && typeof increment === 'number') {
 			var oldScaleRate = scaleRate;
-			scaleRate += addition;
+			scaleRate += increment;
 			if (scaleRate >= 10) {
 				scaleRate = 10;
 			} else if (scaleRate <= 0.2) {
@@ -188,84 +196,164 @@ var drawing = (function () {
 			var x = event.clientX - getElementViewLeft($canvas),
 				y = event.clientY = getElementViewTop($canvas);
 			if (event.deltaY > 0) {
-				scaleAdd(-0.2, x, y);
+				scale(-0.2, x, y);
 			} else {
-				scaleAdd(0.2, x, y);
+				scale(0.2, x, y);
 			}
 			return false;
 		}
 	});
 	
+	function load (src, fileName) {
+		var image = new Image();
+		image.src = src;
+		drawing.fileName = fileName ? fileName : getUrlFileName(src);
+		$title.innerText = drawing.fileName;
+		
+		var _this = this;
+		image.onload = function () {
+			$canvas.width = image.width;
+			$canvas.height = image.height;
+			$size.innerText = image.width + '×' + image.height;
+			$scale.innerText = '100%';
+				var size = getlimitSize(image, 800, 500);
+			scaleRate = size.width / $canvas.width;
+			context.drawImage(image, 0, 0);
+			
+			_this.scale(0);
+			// _this.setCenter();
+			window.addEventListener('resize', function () {
+				// _this.setCenter();
+			});
+			$('#menu-save').enable();
+			$('#menu-saveAs').enable();
+			$canvas.onmousemove = function (event) {
+				var x = event.clientX - getElementViewLeft(this) + $drawing.scrollLeft,
+					y = event.clientY - getElementViewTop(this) + $drawing.scrollTop;
+				$('#pos-x').innerText = Math.round(x / scaleRate);
+				$('#pos-y').innerText = Math.round(y / scaleRate);
+			}
+		};
+	}
+	
 	return {
 		$canvas: $canvas,
 		fileName: fileName,
-		load: function (src, fileName) {
-			var image = new Image();
-			image.src = src;
-			drawing.fileName = fileName ? fileName : getUrlFileName(src);
-			$title.innerText = drawing.fileName;
-			
-			var _this = this;
-			image.onload = function () {
-				$canvas.width = image.width;
-				$canvas.height = image.height;
-				$size.innerText = image.width + '×' + image.height;
-				$scale.innerText = '100%';
-					// var size = getlimitSize(image, 800, 500);
-				// scaleRate = size.width / $canvas.width;
-				context.drawImage(image, 0, 0);
-				
-				_this.scaleAdd(0);
-				// _this.setCenter();
-				window.addEventListener('resize', function () {
-					// _this.setCenter();
-				});
-			};
-		},
+		load: load,
 		setCenter: setCenter,
-		scaleAdd: scaleAdd
+		scale: scale
 	};
 })();
 
 var option = (function () {
 	var $option = $('.option')[0],
-		$currentOption = null,
+		currentTool = '',
+		$currentOption = null;
 		$currentToolDisplay = $('#current-tool');
 	return {
 		switchOption: function (toolId) {
-			var $toolLabel = $('label[for="tool-' + toolId + '"]')[0];
-			$currentToolDisplay.className = $toolLabel.className;
-			if ($currentOption) {
-				$currentOption.style.display = 'none';
-			}
+			$currentToolDisplay.className = $('#tool-' + toolId).className;
+			$currentOption && ($currentOption.className = '');
 			$currentOption = $('#option-' + toolId);
-			if ($currentOption) {
-				$currentOption.style.display = 'inline-block';
-			}
+			$currentOption && ($currentOption.className = 'actived');
 		}
 	}
 })();
 
 var tool = (function () {
-	var $currentTool = getRadioCheckedElement('tool');
+	var currentTool = 'move',
+		toolCommandSet = null;
 
 	function switchTool(toolId) {
+		if (! $('#tool-' + toolId)) return false;
+		currentTool && $('#tool-' + currentTool).removeClass('checked');
 		currentTool = toolId;
+        $('#tool-' + currentTool).addClass('checked');
 		option.switchOption(toolId);
+
+		if (toolCommandSet && toolCommandSet[currentTool]) {
+			var commands = toolCommandSet[currentTool],
+				keys = Object.keys(commands.event);
+			drawing.$canvas.style.cursor = commands.cursor ? commands.cursor : 'default';
+			foreach(keys, function (item) {
+				if (item === 'keydown' || item === 'keyup') {
+					window.addEventListener(item, commands.event[item]);
+				} else {
+					drawing.$canvas.addEventListener(item, commands.event[item]);
+				}
+			});
+		} else {
+			drawing.$canvas.style.cursor = 'default';
+		}
 	}
 
-	switchTool(getIdSuffix($currentTool.id));
+	function bindKeyToSwitch(toolId, key) {
+		window.addEventListener('keydown', function (e) {
+			if (e.key === key) {
+				switchTool(toolId);
+				return false;		//屏蔽该键原本作用
+			}
+        });
+	}
+	
+	function bindToolCommandSet(_toolCommandSet) {
+		toolCommandSet = _toolCommandSet;
+	}
 
-	listenRadioChange('tool', function () {
-		$currentTool = this;
-		switchTool(getIdSuffix(this.id));
-	});
+	function init() {
+		switchTool('move');
+		foreach($('.tool>ul div'), function (item) {
+			item.onclick = function () {
+				switchTool(getIdSuffix(this.id));
+            }
+        });
+    }
+
+    init();
 
 	return {
 		currentTool: '',
-		switchTool: switchTool
+		switchTool: switchTool,
+		bindKeyToSwitch: bindKeyToSwitch,
+		bindToolCommandSet: bindToolCommandSet
 	};
 })();
+
+var magnifierTool = (function () {
+	_isZoomIn = true,
+	_scaleRate = 0.2,
+
+	cursor = 'zoom-in';
+	function click (event) {
+		var rate = _isZoomIn ? _scaleRate : (-1 * _scaleRate);
+		drawing.scale(rate, event.clientX, event.clientY);
+	}
+	function keydown (event) {
+		if (event.altKey) {
+			_isZoomIn = false;
+			drawing.$canvas.style.cursor = 'zoom-out';
+		}
+	}
+	function keyup () {
+		if (!_isZoomIn) {
+			_isZoomIn = true;
+			drawing.$canvas.style.cursor = 'zoom-in';
+		}
+	} 
+
+	return {
+		cursor: cursor,
+		event: {
+			click: click,
+			keydown : keydown,
+			keyup: keyup
+		}
+	}
+})();
+
+var toolCommandSet = {
+	magnifier: magnifierTool
+};
 
 (function init() {
 	$('.bottom-container')[0].style.height = (window.innerHeight - 62) + 'px';
@@ -275,4 +363,9 @@ var tool = (function () {
 	});
 	bindMenuClick($('.menu')[0], commandSet);
 	bindWindowControlClick($('.window-control')[0], windowCommand);
+	tool.bindKeyToSwitch('hand', 32);
+	window.oncontextmenu = function () {
+		return false;
+	};
+	tool.bindToolCommandSet(toolCommandSet);
 })();

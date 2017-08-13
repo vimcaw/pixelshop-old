@@ -115,7 +115,9 @@ function bindMenuClick ($menuUl, commandSet) {
 		var id = getIdSuffix(item.id);      //id值去前缀
 		if (id && commandSet[id]) {
 			item.onclick = function () {
-				commandSet[id]();
+				if (this.className !== 'disabled') {
+					commandSet[id]();
+				}
 			};
 		} else {
 			item.onclick = function () {
