@@ -1,8 +1,10 @@
-body{
+html, body{
+    width: 100%;
+    height: 100%;
     background: #2c2c2c;
     color: #f0f0f0;
     overflow: hidden;
-    font-size: 14px;
+    font-size: 100%;
 }
 
 a, a:visited{
@@ -32,10 +34,11 @@ a, a:visited{
     display: none;
 }
 .block-all{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
     z-index: 100;
 }
 .twinkle-border{
@@ -54,7 +57,7 @@ a, a:visited{
 }
 .top:hover, .option:hover, .tool:hover, .panel:hover, .window{
     position: relative;
-    box-shadow: 2px 2px 40px #000000;
+    box-shadow: 0 0 2em #000000;
     z-index: 50;
 }
 ::-webkit-scrollbar, ::-webkit-scrollbar-corner{
@@ -70,7 +73,7 @@ a, a:visited{
     position: absolute;
     top: 0;
     right: 0;
-    padding: 4px;
+    padding: 0.5em;
 }
 .window-control li:hover{
     background: #2c2c2c;
@@ -78,11 +81,11 @@ a, a:visited{
 
 /*选项栏*/
 .option{
-    height: 30px;
-    margin: 2px 0;
-    padding-left: 5px;
+    height: 2em;
+    margin: 0.2em 0;
+    padding-left: 0.5em;
     background: #535353;
-    font-size: 14px;
+    font-size: 1em;
 }
 
 .option div{
@@ -98,15 +101,23 @@ a, a:visited{
     line-height: 30px;
 }
 
+.option #current-tool{
+    font-size: 1em;
+    line-height: 2em;
+}
+
 /*底部区域容器*/
 .bottom-container{
+    position: absolute;
+    top: 4.1em;
+    bottom: 0;
+    width: 100%;
     overflow: hidden;
 }
 
 /*工具栏*/
 .tool{
     float: left;
-    width: 2.4em;
     height: 100%;
 }
 .tool>ul{
@@ -116,7 +127,7 @@ a, a:visited{
     display: inline-block;
     font-size: 1em;
     padding: 0.4em;
-    margin: 0.3em;
+    margin: 0.2em;
 }
 .tool>ul div:hover{
     background: #404040;
@@ -147,59 +158,94 @@ a, a:visited{
 }
 
 /*画布*/
-.drawing-container{
+#view-container{
+    position: relative;
     height: 100%;
-    margin: 0 302px 0 34px;
+    margin: 0 15em 0 2.4em;
     z-index: 1;
     overflow: hidden;
 }
-.drawing-container ul.title-bar{
-    height: 26px;
-    margin-bottom: 2px;
+#view-container ul.title-bar{
+    font-size: 0.8em;
+    margin-bottom: 0.2em;
     list-style-type: none;
     background: #3b3b3b;
 }
-.drawing-container ul.title-bar li{
+#view-container ul.title-bar li{
     display: inline-block;
     background: #535353;
     cursor: default;
 }
-.drawing-container ul.title-bar li span{
-    font-size: 12px;
-    margin: 5px 10px;
+#view-container ul.title-bar li span{
+    margin: 0.4em 0.5em;
 }
-.drawing-container ul.title-bar li .close{
-    padding: 2px;
+#view-container ul.title-bar li .close{
+    padding: 0.1em;
     margin-left: 0;
     vertical-align: middle;
 }
-.drawing-container ul.title-bar li .close:hover{
+#view-container ul.title-bar li .close:hover{
     background: #ff5458;
     border-radius: 50%;
 }
-.drawing-container canvas{
+#view-container canvas{
     transform-origin: 0 0;
 }
-.drawing-container .drawing{
+#view-container .view{
+    position: absolute;
+    top: 2em;
+    bottom: 1.6em;
     width: 100%;
-    height: 92%;
     overflow: scroll;
 }
-.drawing-container .status{
+#view-container .disable-scroll-x{
+    overflow-x: hidden;
+}
+#view-container .disable-scroll-y{
+    overflow-y: hidden;
+}
+#view-container .status{
+    position: absolute;
+    bottom: 0;
     width: 100%;
-    height: 20px;
-    font-size: 12px;
-    line-height: 20px;
+    font-size: 0.8em;
+    line-height: 1.8em;
     background: #535353;
-    padding-left: 10px;
-    margin-top: 3px;
+    padding-left: 1em;
+    margin-top: 0.2em;
 }
 
 /*面板*/
 .panel-group{
     float: right;
-    width: 300px;
-    height: 400px;
+    width: 15em;
+    height: 30em;
+}
+
+.panel{
+    position: relative;
+    width: 90%;
+    margin: 1%;
+    padding: 5%;
+    background: #535353;
+}
+.panel .title-bar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 100%;
+    height: 30px;
+    font-size: 12px;
+    background: #2c2c2c;
+    overflow: hidden;
+    cursor: default;
+}
+.panel .title-bar>p{
+    position: absolute;
+    margin: 0;
+    padding-left: 15px;
+    line-height: 30px;
 }
 
 /*自定义样式*/
@@ -208,7 +254,7 @@ a, a:visited{
 }
 
 #canNotReadLocalFile{
-    width: 500px;
+    width: 40em;
 }
 #canNotReadLocalFile span{
     float: left;
@@ -216,4 +262,14 @@ a, a:visited{
 }
 #canNotReadLocalFile ul, #canNotReadLocalFile h2{
     clear: both;
+}
+.color-picker.static {
+    display:inline-block !important;
+    position:static !important;
+    top:0 !important;
+    left:0 !important;
+    
+}
+.color-picker.static *{
+    margin: 0 !important;
 }

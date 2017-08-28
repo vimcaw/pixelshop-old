@@ -60,7 +60,7 @@ var commandSet = {
 					file = this.files[0];
 				reader.readAsDataURL(file);
 				reader.onload = function() {
-					drawing.load(this.result, file.name);
+					view.load(this.result, file.name);
 				}
 			}
 		};
@@ -77,7 +77,7 @@ var commandSet = {
 			}
 		};
 		windowForm.find('#confirm').onclick = function () {
-			drawing.load(windowForm.find('input').value);
+			view.load(windowForm.find('input').value);
 			windowForm.close();
 		};
 	},
@@ -90,12 +90,12 @@ var commandSet = {
 				jpg: 'jpeg',
 				webp: 'webp'
 			};
-		imageName = drawing.fileName;
-		var result = drawing.fileName.match(/\..+/g);
+		imageName = view.fileName;
+		var result = view.fileName.match(/\..+/g);
 		imageFormat = result && result[result.length - 1].substring(1);
 		downloader.download = imageName;
 
-		downloader.href = drawing.$canvas.toDataURL('image/' + format[imageFormat]);
+		downloader.href = view.$canvas.toDataURL('image/' + format[imageFormat]);
 		document.body.appendChild(downloader);
 		downloader.click();
 	},
@@ -140,16 +140,45 @@ var bindWindowControlClick = function ($windowControlUl, commandSet) {
 	});
 };
 
-var drawing = (function () {
-	var $drawing = $('.drawing')[0],
-		$canvas = $('.drawing canvas')[0],
+var view = (function () {
+	var $view = $('.view'),
+		$canvas = $('.view canvas'),
 		context = $canvas.getContext('2d'),
-		$title = $('.drawing-title')[0],
-		$size = $('.canvas-size')[0],
-		$scale = $('.canvas-scale')[0],
+		$title = $('.title'),
+		$size = $('.canvas-size'),
+		$scale = $('.canvas-scale'),
 		fileName = '';
+
+	const initFillRate = 0.9;	//view打开图片时，图片的占比
 	
 	var scaleRate = 1;
+
+	function _adjustImage () {
+		var width = $canvas.offsetWidth,
+			height = $canvas.offsetHeight,
+			maxWidth = $view.offsetWidth * initFillRate,
+			maxHeight = $view.offsetHeight * initFillRate,
+			sizeRate = width / height,
+			maxSizeRate = maxWidth / maxHeight;
+	
+		if (width > maxWidth && height > maxHeight) {
+			//如果宽高都超过限制，取宽高中最大值，按比例缩放至符合要求的最大尺寸
+			if (sizeRate >= maxSizeRate) {
+				scaleRate = maxWidth / width;
+			} else {
+				scaleRate = maxHeight / height;
+			}
+		} else if (width > maxWidth) {
+			scaleRate = maxWidth / width;
+		} else if (height > maxHeight) {
+			scaleRate = maxHeight / height;
+		} else {
+			$canvas.addClass('inner');
+		}
+		$canvas.style.transform = 'scale(' + scaleRate + ')';
+		$scale.innerText = ((scaleRate * 100).toFixed(2)) + '%';
+	}
+	
 	
 	function scale(increment, x, y) {
 		if (increment && typeof increment === 'number') {
@@ -163,15 +192,25 @@ var drawing = (function () {
 			$canvas.style.transform = 'scale(' + scaleRate + ')';
 			$scale.innerText = ((scaleRate * 100).toFixed(2)) + '%';
 			if (x && y) {
-				$drawing.scrollLeft = scaleRate * ($drawing.scrollLeft + x) / oldScaleRate - x;
-				$drawing.scrollTop = scaleRate * ($drawing.scrollTop + y) / oldScaleRate - y;
+				$view.scrollLeft = scaleRate * ($view.scrollLeft + x) / oldScaleRate - x;
+				$view.scrollTop = scaleRate * ($view.scrollTop + y) / oldScaleRate - y;
 			}
+			// if ($canvas.offsetWidth <= $view.offsetWidth) {
+			// 	$view.addClass('disable-scroll-x');
+			// } else {
+			// 	$view.removeClass('disable-scroll-x');
+			// }
+			// if ($canvas.offsetHeight <= $view.offsetHeight) {
+			// 	$view.addClass('disable-scroll-y');
+			// } else {
+			// 	$view.removeClass('disable-scroll-y');
+			// }
 		}
 	}
 	
 	function setCenter () {
-		var left = ($drawing.offsetWidth - $canvas.width) / 2;
-		var top = ($drawing.offsetHeight - $canvas.height) / 2;
+		var left = ($view.clientWidth - $canvas.clientWidth * scaleRate) / 2;
+		var top = ($view.clientHeight - $canvas.clientHeight * scaleRate) / 2;
 		if (left < 0) {
 			left = 0;
 		}
@@ -182,7 +221,7 @@ var drawing = (function () {
 		$canvas.style.marginTop = top + 'px';
 	}
 	
-	bindWhellOver($drawing, function (event) {
+	bindWhellOver($view, function (event) {
 		if (event.ctrlKey) {
 			//如果ctrl键按下，滑动滚轮左右移动画布
 			if (event.deltaY > 0) {
@@ -203,12 +242,13 @@ var drawing = (function () {
 			return false;
 		}
 	});
+
 	
 	function load (src, fileName) {
 		var image = new Image();
 		image.src = src;
-		drawing.fileName = fileName ? fileName : getUrlFileName(src);
-		$title.innerText = drawing.fileName;
+		view.fileName = fileName ? fileName : getUrlFileName(src);
+		$title.innerText = view.fileName;
 		
 		var _this = this;
 		image.onload = function () {
@@ -216,20 +256,21 @@ var drawing = (function () {
 			$canvas.height = image.height;
 			$size.innerText = image.width + '×' + image.height;
 			$scale.innerText = '100%';
-				var size = getlimitSize(image, 800, 500);
-			scaleRate = size.width / $canvas.width;
+			// var size = getlimitSize(image, 800, 500);
+			// scaleRate = size.width / $canvas.width;
+			_adjustImage();
 			context.drawImage(image, 0, 0);
 			
-			_this.scale(0);
-			// _this.setCenter();
+			// _this.scale(0);
+			_this.setCenter();
 			window.addEventListener('resize', function () {
-				// _this.setCenter();
+				_this.setCenter();
 			});
 			$('#menu-save').enable();
 			$('#menu-saveAs').enable();
 			$canvas.onmousemove = function (event) {
-				var x = event.clientX - getElementViewLeft(this) + $drawing.scrollLeft,
-					y = event.clientY - getElementViewTop(this) + $drawing.scrollTop;
+				var x = event.clientX - getElementViewLeft(this) + $view.scrollLeft,
+					y = event.clientY - getElementViewTop(this) + $view.scrollTop;
 				$('#pos-x').innerText = Math.round(x / scaleRate);
 				$('#pos-y').innerText = Math.round(y / scaleRate);
 			}
@@ -241,12 +282,13 @@ var drawing = (function () {
 		fileName: fileName,
 		load: load,
 		setCenter: setCenter,
-		scale: scale
+		scale: scale,
+		context: context
 	};
 })();
 
 var option = (function () {
-	var $option = $('.option')[0],
+	var $option = $('.option'),
 		currentTool = '',
 		$currentOption = null;
 		$currentToolDisplay = $('#current-tool');
@@ -264,27 +306,37 @@ var tool = (function () {
 	var currentTool = 'move',
 		toolCommandSet = null;
 
-	function switchTool(toolId) {
-		if (! $('#tool-' + toolId)) return false;
-		currentTool && $('#tool-' + currentTool).removeClass('checked');
-		currentTool = toolId;
-        $('#tool-' + currentTool).addClass('checked');
-		option.switchOption(toolId);
-
+	function _foreachEvents (isAdd) {
 		if (toolCommandSet && toolCommandSet[currentTool]) {
-			var commands = toolCommandSet[currentTool],
-				keys = Object.keys(commands.event);
-			drawing.$canvas.style.cursor = commands.cursor ? commands.cursor : 'default';
+			let commands = toolCommandSet[currentTool],
+				keys = Object.keys(commands.event),
+				handle;
+			
+			view.$canvas.style.cursor = commands.cursor ? commands.cursor : 'default';
+
+			handle = isAdd ? 'addEventListener' : 'removeEventListener';
+
 			foreach(keys, function (item) {
 				if (item === 'keydown' || item === 'keyup') {
-					window.addEventListener(item, commands.event[item]);
+					window[handle](item, commands.event[item]);
 				} else {
-					drawing.$canvas.addEventListener(item, commands.event[item]);
+					view.$canvas[handle](item, commands.event[item]);
 				}
 			});
 		} else {
-			drawing.$canvas.style.cursor = 'default';
+			view.$canvas.style.cursor = 'default';
 		}
+	}
+
+	function switchTool(toolId) {
+		if (! $('#tool-' + toolId)) return false;
+		currentTool && $('#tool-' + currentTool).removeClass('checked');
+		_foreachEvents(false);
+		currentTool = toolId;
+        $('#tool-' + currentTool).addClass('checked');
+		option.switchOption(toolId);
+		_foreachEvents(true);	
+		
 	}
 
 	function bindKeyToSwitch(toolId, key) {
@@ -302,7 +354,7 @@ var tool = (function () {
 
 	function init() {
 		switchTool('move');
-		foreach($('.tool>ul div'), function (item) {
+		foreach($$('.tool>ul div'), function (item) {
 			item.onclick = function () {
 				switchTool(getIdSuffix(this.id));
             }
@@ -319,6 +371,19 @@ var tool = (function () {
 	};
 })();
 
+var eyedropper = {
+	event: {
+		click: function (event) {
+			var x = $('#pos-x').innerText,
+				y = $('#pos-y').innerText,
+				imageData = view.context.getImageData(x, y, 1, 1);
+
+			color.setForeColor(color.RGB2HEX(imageData.data));
+		}
+	}
+	
+}
+
 var magnifierTool = (function () {
 	_isZoomIn = true,
 	_scaleRate = 0.2,
@@ -326,18 +391,19 @@ var magnifierTool = (function () {
 	cursor = 'zoom-in';
 	function click (event) {
 		var rate = _isZoomIn ? _scaleRate : (-1 * _scaleRate);
-		drawing.scale(rate, event.clientX, event.clientY);
+		view.scale(rate, event.clientX, event.clientY);
 	}
 	function keydown (event) {
 		if (event.altKey) {
 			_isZoomIn = false;
-			drawing.$canvas.style.cursor = 'zoom-out';
+			view.$canvas.style.cursor = 'zoom-out';
 		}
+		event.preventDefault();
 	}
 	function keyup () {
 		if (!_isZoomIn) {
 			_isZoomIn = true;
-			drawing.$canvas.style.cursor = 'zoom-in';
+			view.$canvas.style.cursor = 'zoom-in';
 		}
 	} 
 
@@ -352,17 +418,109 @@ var magnifierTool = (function () {
 })();
 
 var toolCommandSet = {
+	eyedropper: eyedropper,
 	magnifier: magnifierTool
 };
 
-(function init() {
-	$('.bottom-container')[0].style.height = (window.innerHeight - 62) + 'px';
+var color = (function () {
+	var _foreColor = 'ffffff',
+		_backColor = '000000',
+		_$foreColorDisplay = $('#fore-color'),
+		_$backColorDisplay = $('#back-color'),
+		colorPicker = new CP($('#colorPicker'), false);
 
-	window.addEventListener('resize', function () {
-		document.body.style.height = window.innerHeight + 'px';
-	});
-	bindMenuClick($('.menu')[0], commandSet);
-	bindWindowControlClick($('.window-control')[0], windowCommand);
+	var HSV2RGB = CP.HSV2RGB,
+		HSV2HEX = CP.HSV2HEX,
+		RGB2HSV = CP.RGB2HSV,
+		RGB2HEX = CP.RGB2HEX,
+		HEX2HSV = CP.HEX2HSV,
+		HEX2RGB = CP.HEX2RGB;
+
+	function getForeColor () {
+		return _foreColor;
+	}
+
+	function getBackColor () {
+		return _backColor;
+	}
+	
+	function setForeColor (color) {
+		var grayScale = 255 - getGrayScale(color);
+		_foreColor = color;
+		_$foreColorDisplay.style.backgroundColor = '#' + color;
+		_$foreColorDisplay.style.borderColor = '#' + getGrayScaleColor(grayScale);
+	}
+
+	function setBackColor (color) {
+		var grayScale = 255 - getGrayScale(color);
+		_backColor = color;
+		_$backColorDisplay.style.backgroundColor = '#' + color;
+		_$backColorDisplay.style.borderColor = '#' + getGrayScaleColor(grayScale);
+	}
+
+	function getComplementaryColor (hexColor) {
+		var color = HEX2RGB(hexColor),
+			complementaryColor = [];
+
+		color.forEach(function (item, index) {
+			complementaryColor[index] = 255 - item;
+		});
+
+		return RGB2HEX(complementaryColor);
+	}
+
+	function getGrayScale (hexColor) {
+		var color = HEX2RGB(hexColor);
+		return (color[0]*38 + color[1]*75 + color[2]*15) >> 7;
+	}
+
+	function getGrayScaleColor (grayScale) {
+		return RGB2HEX([grayScale, grayScale, grayScale]);
+	}
+
+	(function init () {
+		colorPicker.picker.classList.add('static');
+		$('#fore-color').addEventListener('click', function () {
+			windowUIList.colorPicker.open();
+			colorPicker.enter($('#colorPicker'));
+			colorPicker.on('change', function (color) {
+				setForeColor(color);
+			});
+			windowUIList.colorPicker.on('close', function () {
+				colorPicker.off('change')
+			});
+		});
+		$('#back-color').addEventListener('click', function () {
+			windowUIList.colorPicker.open();
+			colorPicker.enter($('#colorPicker'));
+			colorPicker.on('change', function (color) {
+				setBackColor(color);
+			});
+			windowUIList.colorPicker.on('close', function () {
+				colorPicker.off('change')
+			});
+		});
+	})();
+
+	return {
+		getForeColor: getForeColor,
+		getBackColor: getBackColor,
+		setForeColor: setForeColor,
+		setBackColor: setBackColor,
+		HSV2RGB: HSV2RGB,
+		HSV2HEX: HSV2HEX,
+		RGB2HSV: RGB2HSV,
+		RGB2HEX: RGB2HEX,
+		HEX2HSV: HEX2HSV,
+		HEX2RGB: HEX2RGB,
+		getGrayScale: getGrayScale
+	}
+})();
+
+(function init() {
+	bindMenuClick($('.menu'), commandSet);
+	windowUIList = getAllWindowUI();
+	bindWindowControlClick($('.window-control'), windowCommand);
 	tool.bindKeyToSwitch('hand', 32);
 	window.oncontextmenu = function () {
 		return false;

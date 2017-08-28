@@ -12,6 +12,12 @@ function WindowUI ($window) {
 	this.$elements = this.$this.children;
 	this.$titleBar = document.createElement('div');
 	this.$title = document.createElement('p');
+
+	//Hook
+	this.hook = {
+		open: [],
+		close: []
+	}
 	
 	var $close = document.createElement('div');
 	this.$titleBar.className = 'title-bar';
@@ -52,6 +58,9 @@ WindowUI.prototype = {
 		window.addEventListener('resize', function () {
 			_this.setCenter();
 		});
+		this.hook.open && this.hook.open.forEach(function (callback) {
+			callback();
+		})
 	},
 	close: function () {
 		this.$this.style.display = 'none';
@@ -59,6 +68,9 @@ WindowUI.prototype = {
 		//修复类名，防止下次窗口刚出现就闪烁
 		this.$this.className = 'window';
 		this.$titleBar.className = 'title-bar';
+		this.hook.close && this.hook.close.forEach(function (callback) {
+			callback();
+		})
 	},
 	find: function (selector) {
 		return this.$this.querySelector(selector);
@@ -72,6 +84,9 @@ WindowUI.prototype = {
 	twinkle: function () {
 		playAnimation(this.$this, 'window', 'window twinkle-border');
 		playAnimation(this.$titleBar, 'title-bar', 'title-bar twinkle-title');
+	},
+	on: function (hook, callback) {
+		this.hook[hook].push(callback);
 	}
 };
 

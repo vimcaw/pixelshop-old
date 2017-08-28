@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="windowsUI.css">
     <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css">
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="ColorPicker/color-picker.min.css">
 </head>
 <body>
     <div class="top">
@@ -80,7 +81,7 @@
             <ul>
                 <li><div id="tool-move" class="iconfont icon-yidong checked" title="Move tool"></div></li>
                 <li><div id="tool-crop" class="iconfont icon-tupiancaijian" title="Crop tool"></div></li>
-                <li><div id="tool-straw" class="iconfont icon-icon-straw" title="Eyedropper tool"></div></li>
+                <li><div id="tool-eyedropper" class="iconfont icon-icon-straw" title="Eyedropper tool"></div></li>
                 <li><div id="tool-blush" class="iconfont icon-icon" title="Blush tool"></div></li>
                 <li><div id="tool-eraser" class="iconfont icon-xiangpi" title="Eraser tool"></div></li>
                 <li><div id="tool-text" class="iconfont icon-wenben" title="Text tool"></div></li>
@@ -101,14 +102,14 @@
             </div>
         </div>
 
-        <div class="drawing-container">
+        <div id="view-container">
             <ul class="title-bar">
                 <li>
-                    <span class="drawing-title"></span>
+                    <span class="title"></span>
                     <span class="fa fa-times close"></span>
                 </li>
             </ul>
-            <div class="drawing"><canvas></canvas></div>
+            <div class="view"><canvas></canvas></div>
             <div class="status">
                 <span class="canvas-size"></span>
                 @
@@ -135,14 +136,18 @@
             <br>
             <img src="" alt="">
         </div>
+        <div class="window" id="colorPicker">
+            <p>Color Picker</p>
+        </div>
         <div class="window" id="about">
-            <p>Pixelshop V0.2.4</p>
+            <p>Pixelshop V0.2.5</p>
             <p>Github Page: <a href="https://github.com/vimcaw/Pixelshop">https://github.com/vimcaw/Pixelshop</a></p>
             <p>author: <a href="https://github.com/vimcaw">vimcaw</a></p>
         </div>
     </div>
     <script src="common.js"></script>
-    <script src="windowsUI.js"></script>
+    <script src="WebDesktop.js"></script>
+    <script src="ColorPicker/color-picker.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

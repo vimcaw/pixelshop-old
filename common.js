@@ -8,12 +8,12 @@
  * @returns {*} {Node/NodeList} 若为id选择器，返回单个元素，否则返回NodeList
  */
 var $ = function (selector) {
-	if (selector.charAt(0) === '#') {
-		return document.querySelector(selector);
-	} else {
-		return document.querySelectorAll(selector);
-	}
+	return document.querySelector(selector);
 };
+
+function $$ (selector) {
+	return document.querySelectorAll(selector);
+}
 
 /**
  * 遍历数组或类数组并对每项进行操作
