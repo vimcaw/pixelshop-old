@@ -17,7 +17,10 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 预览：https://vimcaw.github.io/Pixelshop/
 
 ## Progress
-> 2018-8-28 ---------- V0.2.5
+> 2017-8-29 ---------- V0.2.6
+> * New Color Picker UI - Improved UI
+
+> 2017-8-28 ---------- V0.2.5
 > * Color Picker UI - fire when clicked fore-color or back-color on tool bar.
 > * Eyedropper Tool has been realized.
 
@@ -44,5 +47,5 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 > 2017-5-26 ---------- V0.1.0
 > * Realized basic UI.
 
-## Used project
+## Import project
 1. [Color Picker](https://github.com/tovic/color-picker);

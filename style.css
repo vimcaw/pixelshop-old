@@ -49,6 +49,20 @@ a, a:visited{
     animation: .15s twinkleTitle;
     animation-iteration-count: 6;
 }
+.row>div{
+    display: inline-block;
+}
+button{
+    padding: 0.3em 1em;
+    background: #3b3b3b;
+    color: #f0f0f0;
+    border-radius: 0.5em;
+    border: 0.1em solid #727272;
+    transition: all 0.8s;
+}
+button:hover{
+    background: #2c2c2c;
+}
 /*全局样式*/
 .top, .option, .tool, .panel{
     position: relative;
@@ -145,16 +159,16 @@ a, a:visited{
 }
 .tool .color #fore-color{
     left: 0.3em;
-    background: #FFFFFF;
-    border: 0.05em solid #000000;
+    background: #000;
+    border: 0.05em solid #fff;
     z-index: 1;
 }
 .tool .color #back-color{
     top: 0.7em;
     right: 0.3em;
-    background: #000;
+    background: #fff;
     z-index: 0;
-    border: 0.05em solid #fff;
+    border: 0.05em solid #000;
 }
 
 /*画布*/
@@ -263,13 +277,60 @@ a, a:visited{
 #canNotReadLocalFile ul, #canNotReadLocalFile h2{
     clear: both;
 }
-.color-picker.static {
+/* Color Picker */
+.color-picker.static{
     display:inline-block !important;
     position:static !important;
     top:0 !important;
     left:0 !important;
-    
 }
 .color-picker.static *{
-    margin: 0 !important;
+    margin: 0;
+}
+.color-picker-control{
+    border: none !important;
+    box-shadow: none !important;
+}
+.color-picker-sv, .color-picker-h{
+    height: 15em !important;
+    border: 0.1em solid #000 !important;
+}
+.color-picker-sv{
+    width: 15em !important;
+}
+.color-picker-h{
+    width: 1.5em !important;
+    margin-left: 1em !important;
+}
+#colorPicker #picker-UI, #colorPicker .handle, #colorPicker ul{
+    display: inline-block;
+}
+#colorPicker #picker-UI{
+    height: 100%;
+}
+#colorPicker ul{
+    list-style-type: none;
+}
+#colorPicker .hsv input, #colorPicker .rgb input{
+    width: 3em;
+}
+#colorPicker .hex input{
+    width: 5em;
+}
+#colorPicker .button button{
+    display: block;
+    margin: 1em;
+}
+#colorPicker .color-comparison{
+    text-align: center;
+    margin: 0 1.2em;
+}
+#colorPicker .color-comparison div{
+    width: 4em;
+    height: 2em;
+    background: #000;
+    margin: 0;
+}
+#colorPicker .row div{
+    vertical-align: middle;
 }

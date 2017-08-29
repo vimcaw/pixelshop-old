@@ -14,7 +14,7 @@ var $$ = function (selector) {
  * @param array {Array} 要遍历的数组
  * @param callback {Function} 对每项进行处理的函数
  */
-var foreach = function (array, callback) {
+var forEach = function (array, callback) {
 	for (var i = 0,item; item = array[i++];) {
 		callback(item, i - 1);
 	}
@@ -149,7 +149,7 @@ function getRadioCheckedElement(radioName) {
  */
 function listenRadioChange(radioName, callback) {
 	var $radios = document.getElementsByName(radioName);
-	foreach($radios, function (item) {
+	forEach($radios, function (item) {
 		item.addEventListener('change', function () {
 			if (this.checked) {
 				return callback.call(this, arguments);
@@ -169,13 +169,13 @@ function listenRadioChange(radioName, callback) {
  * @param $ul {HTMLUIListElement} 菜单ul容器元素
  * @param callback {Function} 对每个子菜单执行操作的回调函数，传递该子菜单元素作为回调参数
  */
-function foreachMenu ($ul, callback) {
+function forEachMenu ($ul, callback) {
 	var $uls = $ul.children;
-	foreach($uls, function (item) {
+	forEach($uls, function (item) {
 		if (item.children.length === 0) {
 			callback(item);
 		} else {
-			foreachMenu(item.querySelector('ul'), callback);
+			forEachMenu(item.querySelector('ul'), callback);
 		}
 	});
 }
@@ -187,7 +187,7 @@ function foreachMenu ($ul, callback) {
  */
 function bindMenuClick ($menuUl, commandSet) {
 	//遍历菜单，给每项子菜单绑定指令集中的指令
-	foreachMenu($menuUl, function (item) {
+	forEachMenu($menuUl, function (item) {
 		var id = item.id.search('-') ? getIdSuffix(item.id) : item.id;      //id值去前缀
 		if (id && commandSet[id]) {
 			item.onclick = function () {
@@ -201,7 +201,7 @@ function bindMenuClick ($menuUl, commandSet) {
 	});
 	//给二级菜单框绑定点击事件，在子菜单点击后的冒泡阶段隐藏此二级菜单
 	var $ul_2 = $menuUl.getElementsByTagName('ul');
-	foreach($ul_2, function (item) { 
+	forEach($ul_2, function (item) { 
 		item.onclick = function () {
 			item.addClass('hide');
 		}
@@ -232,7 +232,11 @@ function WindowUI ($window) {
 	}
 
 	this.$titleBar.className = 'title-bar';
-	this.$title.innerText = this.$window.id;
+
+	var title = this.$window.id;
+	title = title.replace(/([A-Z])/g, ' $1');
+	title = title[0].toUpperCase() + title.substring(1);
+	this.$title.innerText = title;
 
 	//关闭按钮
 	var $close = document.createElement('div');
@@ -348,7 +352,7 @@ WindowUI.prototype = {
 function getAllWindowUI () {
 	var windowUIList = {};
 	var $windows = $$('.window');
-	foreach($windows, function (item) {
+	forEach($windows, function (item) {
 		windowUIList[item.id] = new WindowUI(item);
 	});
 	return windowUIList;
@@ -370,7 +374,7 @@ function Tab (tabId) {
 	if (this.$tabList.length !== 0) {
 		this.switchTab(this.currentId);
 		var _this = this;
-		foreach(this.$tabList, function (item, index) {
+		forEach(this.$tabList, function (item, index) {
 			item.onclick = function () {
 				_this.switchTab(index);
 			}
@@ -393,7 +397,7 @@ function getAllTab() {
 	var $tabUIList = $$('.tab');
 	var tabUIList = [];
 	
-	$tabUIList && foreach($tabUIList, function (item) {
+	$tabUIList && forEach($tabUIList, function (item) {
 		tabUIList.push(new Tab(item));
 	});
 	
@@ -454,7 +458,7 @@ Tree.prototype = {
 	createTree: function (data) {
 		var $ul = document.createElement('ul'),
 			_this = this;
-		foreach(data, function (item) {
+		forEach(data, function (item) {
 			if (item.label) {
 				var $li = document.createElement('li'),
 					$span = document.createElement('span');

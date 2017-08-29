@@ -137,10 +137,36 @@
             <img src="" alt="">
         </div>
         <div class="window" id="colorPicker">
-            <p>Color Picker</p>
+            <div id="picker-UI"></div>
+            <div class="handle">
+                <div class="row">
+                    <div class="color-comparison">
+                        <span>New</span>
+                        <div id="color-current"></div>
+                        <div id="color-before"></div>
+                        <span>Current</span>
+                    </div>
+                    <div class="button">
+                        <button class="confirm" type="button">Comfirm</button>
+                        <button class="cancel" type="button">Cancel</button>
+                    </div>
+                </div>
+                
+                <ul class="hsv">
+                    <li>H: <input id="input-h" type="number" step="1" min="0" max="360">°</li>
+                    <li>S: <input id="input-s" type="number" step="1" min="0" max="100">%</li>
+                    <li>V: <input id="input-v" type="number" step="1" min="0" max="100">%</li>
+                </ul>
+                <ul class="rgb">
+                    <li>R: <input id="input-r"  type="number" step="1" min="0" max="255"></li>
+                    <li>G: <input id="input-g" type="number" step="1" min="0" max="255"></li>
+                    <li>B: <input id="input-b" type="number" step="1" min="0" max="255"></li>
+                </ul>
+                <div class="hex">#<input id="input-hex" type="text" maxlength="6"></div>
+            </div>
         </div>
         <div class="window" id="about">
-            <p>Pixelshop V0.2.5</p>
+            <p>Pixelshop V0.2.6</p>
             <p>Github Page: <a href="https://github.com/vimcaw/Pixelshop">https://github.com/vimcaw/Pixelshop</a></p>
             <p>author: <a href="https://github.com/vimcaw">vimcaw</a></p>
         </div>

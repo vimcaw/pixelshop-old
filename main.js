@@ -2,6 +2,8 @@
  * Created by vimcaw on 2017/5/27.
  */
 
+var windowUIList = getAllWindowUI();
+
 Element.prototype.disabled = function () {
 	this.addClass('disabled');
 }
@@ -129,7 +131,7 @@ var windowCommand = {
  */
 var bindWindowControlClick = function ($windowControlUl, commandSet) {
 	var $uls = $windowControlUl.children;
-	foreach($uls, function (item) {
+	forEach($uls, function (item) {
 		var id = getIdSuffix(item.id);
 		if (id && commandSet[id]) {
 			item.onclick = function () {
@@ -306,7 +308,7 @@ var tool = (function () {
 	var currentTool = 'move',
 		toolCommandSet = null;
 
-	function _foreachEvents (isAdd) {
+	function _forEachEvents (isAdd) {
 		if (toolCommandSet && toolCommandSet[currentTool]) {
 			let commands = toolCommandSet[currentTool],
 				keys = Object.keys(commands.event),
@@ -316,7 +318,7 @@ var tool = (function () {
 
 			handle = isAdd ? 'addEventListener' : 'removeEventListener';
 
-			foreach(keys, function (item) {
+			forEach(keys, function (item) {
 				if (item === 'keydown' || item === 'keyup') {
 					window[handle](item, commands.event[item]);
 				} else {
@@ -331,11 +333,11 @@ var tool = (function () {
 	function switchTool(toolId) {
 		if (! $('#tool-' + toolId)) return false;
 		currentTool && $('#tool-' + currentTool).removeClass('checked');
-		_foreachEvents(false);
+		_forEachEvents(false);
 		currentTool = toolId;
         $('#tool-' + currentTool).addClass('checked');
 		option.switchOption(toolId);
-		_foreachEvents(true);	
+		_forEachEvents(true);	
 		
 	}
 
@@ -354,7 +356,7 @@ var tool = (function () {
 
 	function init() {
 		switchTool('move');
-		foreach($$('.tool>ul div'), function (item) {
+		forEach($$('.tool>ul div'), function (item) {
 			item.onclick = function () {
 				switchTool(getIdSuffix(this.id));
             }
@@ -422,12 +424,12 @@ var toolCommandSet = {
 	magnifier: magnifierTool
 };
 
+
 var color = (function () {
-	var _foreColor = 'ffffff',
-		_backColor = '000000',
+	var _foreColor = '000000',
+		_backColor = 'ffffff',
 		_$foreColorDisplay = $('#fore-color'),
-		_$backColorDisplay = $('#back-color'),
-		colorPicker = new CP($('#colorPicker'), false);
+		_$backColorDisplay = $('#back-color');
 
 	var HSV2RGB = CP.HSV2RGB,
 		HSV2HEX = CP.HSV2HEX,
@@ -435,6 +437,146 @@ var color = (function () {
 		RGB2HEX = CP.RGB2HEX,
 		HEX2HSV = CP.HEX2HSV,
 		HEX2RGB = CP.HEX2RGB;
+
+	var colorPicker = (function () {
+		var picker = new CP($('#colorPicker #picker-UI'), false),
+			windowForm = windowUIList.colorPicker,
+			_colorType = '',
+			_tempColor = '';
+		
+		picker.picker.classList.add('static');
+
+		picker.setH = function (h) {
+			
+		}
+			
+		windowForm.find('.cancel').addEventListener('click', function () {
+			close();
+		});
+
+		windowForm.on('close', function () {
+			picker.off('change');
+		});
+
+		windowForm.find('.confirm').addEventListener('click', function () {
+			if (_colorType === 'foreColor') {
+				setForeColor(_tempColor);
+			} else if (_colorType === 'backColor') {
+				setBackColor(_tempColor);
+			}
+			close();
+		});
+
+		function limitRange (value, min, max) {
+			if (value > max) {
+				return max;
+			} else if (value < min || value === NaN) {
+				return min;
+			} else {
+				return value;
+			}
+		}
+
+		forEach(windowForm.findAll('input'), function ($input) {
+			$input.oninput = $input.onpaste = $input.oncut = $input.onkeyup = function (event) {
+				var id = $input.id.substring(6);
+				if (id === "r" || id === "g" || id === 'b') {
+					$input.value = limitRange($input.value, 0, 255);
+				} else if (id === 'h') {
+					$input.value = limitRange($input.value, 0, 360);
+				} else if (id === 's' || id === 'v') {
+					$input.value = limitRange($input.value, 0, 100);
+				} else if (id === 'hex') {
+					if ($input.value.length > 6) {
+						$input.value = $input.value.substring(0, 5);
+						return;
+					}
+					let hex = '';
+					forEach($input.value, function (char, index) {
+						if (isNaN(parseInt(char))) {
+							hex += limitRange(char, 'a', 'f');
+						} else {
+							hex += char;
+						}
+					});
+					$input.value = hex;
+					if ($input.value.length < 6) return;
+				}
+				_updateColor(this);
+			}
+		})
+
+		function _updateData (color) {
+			var rgb = HEX2RGB(color),
+				hsv = HEX2HSV(color);
+
+			windowForm.find('#color-current').style.backgroundColor = '#' + color;
+
+			windowForm.find('#input-hex').value = color;
+
+			windowForm.find('#input-r').value = rgb[0];
+			windowForm.find('#input-g').value = rgb[1];
+			windowForm.find('#input-b').value = rgb[2];
+
+			windowForm.find('#input-h').value = hsv[0];
+			windowForm.find('#input-s').value = hsv[1];
+			windowForm.find('#input-v').value = hsv[2];
+		}
+
+		function _updateColor ($input) {
+			var id = $input.id.substring(6);
+			if (id === "r" || id === "g" || id === 'b') {
+				let r = $('#input-r').value,
+					g = $('#input-g').value,
+					b = $('#input-b').value;
+				picker.set('rgb(' + r + ', ' + g + ', ' + b + ')');
+				_updateData(RGB2HEX([r, g, b]));
+			} else if (id === 'h' || id === 's' || id === 'v') {
+				let h = $('#input-h').value,
+					s = $('#input-s').value,
+					v = $('#input-v').value;
+				picker.set('#' + HSV2HEX([h, s, v]));
+				_updateData(HSV2HEX([h, s, v]));
+			} else if (id === 'hex') {
+				picker.set('#' + $input.value);
+				_updateData($input.value);
+			}
+		}
+
+		function open (colorType) {
+			_colorType = colorType
+			windowForm.open();
+
+			var beforeColor = '';
+
+			windowForm.open();
+
+			if (colorType === 'foreColor') {
+				beforeColor = _foreColor;
+			} else if (colorType === 'backColor') {
+				beforeColor = _backColor;
+			}
+
+			picker.set('#' + beforeColor);
+			windowForm.find('#color-before').style.backgroundColor = '#' + beforeColor;
+			_updateData(beforeColor);
+			
+			picker.enter(windowForm.find('#picker-UI'));
+			picker.on('change', function (color) {
+				_tempColor = color;
+				_updateData(color);
+			});
+		}
+
+		function close () {
+			windowForm.close()
+		}
+
+		return {
+			open: open,
+			close: close
+		};
+	})();
 
 	function getForeColor () {
 		return _foreColor;
@@ -479,26 +621,11 @@ var color = (function () {
 	}
 
 	(function init () {
-		colorPicker.picker.classList.add('static');
 		$('#fore-color').addEventListener('click', function () {
-			windowUIList.colorPicker.open();
-			colorPicker.enter($('#colorPicker'));
-			colorPicker.on('change', function (color) {
-				setForeColor(color);
-			});
-			windowUIList.colorPicker.on('close', function () {
-				colorPicker.off('change')
-			});
+			colorPicker.open('foreColor');
 		});
 		$('#back-color').addEventListener('click', function () {
-			windowUIList.colorPicker.open();
-			colorPicker.enter($('#colorPicker'));
-			colorPicker.on('change', function (color) {
-				setBackColor(color);
-			});
-			windowUIList.colorPicker.on('close', function () {
-				colorPicker.off('change')
-			});
+			colorPicker.open('backColor');
 		});
 	})();
 
@@ -519,7 +646,6 @@ var color = (function () {
 
 (function init() {
 	bindMenuClick($('.menu'), commandSet);
-	windowUIList = getAllWindowUI();
 	bindWindowControlClick($('.window-control'), windowCommand);
 	tool.bindKeyToSwitch('hand', 32);
 	window.oncontextmenu = function () {

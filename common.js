@@ -20,9 +20,9 @@ function $$ (selector) {
  * @param array {Array/likeArray} 要遍历的数组
  * @param callback {Function} 对每项进行处理的函数
  */
-var foreach = function (array, callback) {
+var forEach = function (array, callback) {
 	for (var i = 0,item; item = array[i++];) {
-		callback(item);
+		callback(item, i - 1);
 	}
 };
 
@@ -168,7 +168,7 @@ function getRadioCheckedElement(radioName) {
  */
 function listenRadioChange(radioName, callback) {
 	var $radios = document.getElementsByName(radioName);
-	foreach($radios, function (item) {
+	forEach($radios, function (item) {
 		item.addEventListener('change', function () {
 			if (this.checked) {
 				return callback.call(this, arguments);
