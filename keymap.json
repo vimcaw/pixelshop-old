@@ -1,0 +1,17 @@
+keymap = {
+	"tool" : {
+		"move" : "V",
+		"crop" : "C",
+		"eyedropper" : "I",
+		"blush" : "B",
+		"eraser" : "E",
+		"text" : "T",
+		"rect" : "U",
+		"hand" : "H",
+		"zoom" : "Z"
+	},
+	"color" : {
+		"reset" : "D",
+		"exchange" : "X"
+	}
+};

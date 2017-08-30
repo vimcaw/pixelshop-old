@@ -132,7 +132,8 @@ button:hover{
 /*工具栏*/
 .tool{
     float: left;
-    height: 100%;
+    width: 2.2em;
+    height:100%;
 }
 .tool>ul{
     list-style-type: none;
@@ -149,26 +150,41 @@ button:hover{
 .tool>ul div.checked{
     background: #2c2c2c;
 }
-.tool .color div{
+.tool .color #color-reset, .tool .color #color-exchange{
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    padding: 0.1em;
+    margin-bottom: 0.2em;
+}
+.tool .color #color-reset{
+    background: url("image/ResetColor.svg");
+}
+.tool .color #color-exchange{
+    background: url("image/switchColor.svg");
+}
+.tool #display-color{
+    position: relative;
+}
+.tool .color #display-color div{
     position: absolute;
     width: 1em;
     height: 1em;
 }
-.tool .color{
-    position: relative;
-}
-.tool .color #fore-color{
+.tool .color #display-color #fore-color{
     left: 0.3em;
     background: #000;
     border: 0.05em solid #fff;
+    outline: 0.1em solid #000;
     z-index: 1;
 }
-.tool .color #back-color{
+.tool .color #display-color #back-color{
     top: 0.7em;
     right: 0.3em;
     background: #fff;
+    border: 0.05em solid #fff;
+    outline: 0.1em solid #000;
     z-index: 0;
-    border: 0.05em solid #000;
 }
 
 /*画布*/

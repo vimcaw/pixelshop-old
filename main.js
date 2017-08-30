@@ -306,7 +306,8 @@ var option = (function () {
 
 var tool = (function () {
 	var currentTool = 'move',
-		toolCommandSet = null;
+		toolCommandSet = null,
+		isEnable = true;
 
 	function _forEachEvents (isAdd) {
 		if (toolCommandSet && toolCommandSet[currentTool]) {
@@ -369,61 +370,155 @@ var tool = (function () {
 		currentTool: '',
 		switchTool: switchTool,
 		bindKeyToSwitch: bindKeyToSwitch,
-		bindToolCommandSet: bindToolCommandSet
+		bindToolCommandSet: bindToolCommandSet,
+		isEnable: isEnable
 	};
 })();
 
-var eyedropper = {
-	event: {
-		click: function (event) {
-			var x = $('#pos-x').innerText,
-				y = $('#pos-y').innerText,
-				imageData = view.context.getImageData(x, y, 1, 1);
+var toolCommandSet = (function () {
+	var eyedropper = {
+		cursor: 'url("image/Eyedropper.png"), progress',
+		event: {
+			click: function (event) {
+				var x = $('#pos-x').innerText,
+					y = $('#pos-y').innerText,
+					imageData = view.context.getImageData(x, y, 1, 1);
 
-			color.setForeColor(color.RGB2HEX(imageData.data));
+				color.setForeColor(color.RGB2HEX(imageData.data));
+			}
 		}
-	}
-	
-}
+		
+	};
 
-var magnifierTool = (function () {
-	_isZoomIn = true,
-	_scaleRate = 0.2,
+	var hand = (function () {
+		var _isKeyDown = false;
 
-	cursor = 'zoom-in';
-	function click (event) {
-		var rate = _isZoomIn ? _scaleRate : (-1 * _scaleRate);
-		view.scale(rate, event.clientX, event.clientY);
-	}
-	function keydown (event) {
-		if (event.altKey) {
-			_isZoomIn = false;
-			view.$canvas.style.cursor = 'zoom-out';
+		function keydown (event) {
+			_isKeyDown = true;
 		}
-		event.preventDefault();
-	}
-	function keyup () {
-		if (!_isZoomIn) {
-			_isZoomIn = true;
-			view.$canvas.style.cursor = 'zoom-in';
+
+		function mousemove (event) {
+			if (_isKeyDown) {
+				//
+			}
 		}
-	} 
+
+		return {
+			cursor: '-webkit-grab, grab',
+			event: {
+				keydown: keydown,
+				mousemove:mousemove
+			}
+		};
+	})();
+
+	var zoom = (function () {
+		_isZoomIn = true,
+		_scaleRate = 0.2,
+
+		cursor = 'zoom-in';
+		function click (event) {
+			var rate = _isZoomIn ? _scaleRate : (-1 * _scaleRate);
+			view.scale(rate, event.clientX, event.clientY);
+		}
+		function keydown (event) {
+			if (event.altKey) {
+				_isZoomIn = false;
+				view.$canvas.style.cursor = 'zoom-out';
+			}
+			event.preventDefault();
+		}
+		function keyup () {
+			if (!_isZoomIn) {
+				_isZoomIn = true;
+				view.$canvas.style.cursor = 'zoom-in';
+			}
+		}
+
+		return {
+			cursor: cursor,
+			event: {
+				click: click,
+				keydown : keydown,
+				keyup: keyup
+			}
+		}
+	})();
 
 	return {
-		cursor: cursor,
-		event: {
-			click: click,
-			keydown : keydown,
-			keyup: keyup
-		}
-	}
+		eyedropper: eyedropper,
+		hand: hand,
+		zoom: zoom
+	};
 })();
 
-var toolCommandSet = {
-	eyedropper: eyedropper,
-	magnifier: magnifierTool
+var defaultKeymap = {
+	tool: {
+		move: 'V',
+		crop: 'C',
+		eyedropper: 'I',
+		blush: 'B',
+		eraser: 'E',
+		text: 'T',
+		rect: 'U',
+		hand: 'H',
+		zoom: 'Z'
+	},
+	color: {
+		reset: 'D',
+		exchange: 'X'
+	}
 };
 
+function registerHotkey (key, targetId) {
+	var testingKey = new RegExp(/^((Ctrl|ctrl|Alt|alt|Shift|shift)\+)*[A-Za-z0-9]$/),
+		$target;
+
+	if (!testingKey.test(key)) {
+		return;
+	}
+
+	$target = $('#' + targetId);
+	$target.title += '(' + key + ')';
+	if (key.length === 1) {
+		document.addEventListener('keydown', function (event) {
+			if (event.key.toUpperCase() === key.toUpperCase()) {
+				$target.click();
+			}
+		}, false);
+	} else {
+		document.addEventListener('keydown', function (event) {
+			var stateKey = key.match(/(Ctrl|ctrl|Alt|alt|Shift|shift)/)[0].toLowerCase(),
+				mainKey = key.substring(key.length - 1);
+			if (event[stateKey + 'Key'] && (event.key.toUpperCase() === mainKey.toUpperCase())) {
+				$target.click();
+			}
+		}, false);
+	}
+}
+
+function loadKeymap (keymap) {
+	keymap && Object.keys(keymap).forEach(function (part) {
+		part && Object.keys(keymap[part]).forEach(function (command) {
+			registerHotkey(keymap[part][command], part + '-' + command);
+		})
+	})
+}
+
+// function loadKeymapJSON (filePath) {
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.onreadystatechange = function () {
+// 		if (xhr.readyState === 4) {
+// 			if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+// 				alert(xhr.responseText);
+// 			} else {
+// 				console.log('request keymap.json failed, status: ' + xhr.status);
+// 			}
+// 		}
+// 	}
+// 	xhr.open('data', filePath, true);
+// 	xhr.send(null);
+// }
 
 var color = (function () {
 	var _foreColor = '000000',
@@ -587,17 +682,13 @@ var color = (function () {
 	}
 	
 	function setForeColor (color) {
-		var grayScale = 255 - getGrayScale(color);
 		_foreColor = color;
 		_$foreColorDisplay.style.backgroundColor = '#' + color;
-		_$foreColorDisplay.style.borderColor = '#' + getGrayScaleColor(grayScale);
 	}
 
 	function setBackColor (color) {
-		var grayScale = 255 - getGrayScale(color);
 		_backColor = color;
 		_$backColorDisplay.style.backgroundColor = '#' + color;
-		_$backColorDisplay.style.borderColor = '#' + getGrayScaleColor(grayScale);
 	}
 
 	function getComplementaryColor (hexColor) {
@@ -627,6 +718,15 @@ var color = (function () {
 		$('#back-color').addEventListener('click', function () {
 			colorPicker.open('backColor');
 		});
+		$('#color-reset').addEventListener('click', function () {
+			setForeColor('000000');
+			setBackColor('ffffff');
+		});
+		$('#color-exchange').addEventListener('click', function () {
+			var temp = _foreColor;
+			setForeColor(_backColor);
+			setBackColor(temp);
+		})
 	})();
 
 	return {
@@ -652,4 +752,6 @@ var color = (function () {
 		return false;
 	};
 	tool.bindToolCommandSet(toolCommandSet);
+	// loadKeymap(defaultKeymap);
+	loadKeymap(keymap);
 })();
