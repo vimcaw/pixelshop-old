@@ -161,7 +161,7 @@ button:hover{
     background: url("image/ResetColor.svg");
 }
 .tool .color #color-exchange{
-    background: url("image/switchColor.svg");
+    background: url("image/ExchangeColor.svg");
 }
 .tool #display-color{
     position: relative;

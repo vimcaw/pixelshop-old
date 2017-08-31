@@ -52,4 +52,4 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 > * Realized basic UI.
 
 ## Import project
-1. [Color Picker](https://github.com/tovic/color-picker);
+1. [Color Picker](https://github.com/tovic/color-picker).
