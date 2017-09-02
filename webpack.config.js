@@ -1,6 +1,8 @@
 let HtmlWebpackPlugin = require('html-webpack-plugin'),
     path = require('path');
 
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
     entry: {
         app: path.resolve(__dirname, 'src', 'pixelshop.js')
@@ -14,17 +16,18 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'src', 'index.html')
         }),
+        new ExtractTextPlugin("styles.css")
         // new CleanWebpackPlugin(['dist'])
     ],
     module: {
         rules: [
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            },
+            // {
+            //     test: /\.css$/,
+            //     use: [
+            //         'style-loader',
+            //         'css-loader'
+            //     ]
+            // },
             {
                 test: /\.scss$/,
                 loader: ['style-loader', 'css-loader', 'sass-loader'],
@@ -35,6 +38,13 @@ module.exports = {
                 use: [
                     'file-loader'
                 ]
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader"
+                })
             }
         ]
     }

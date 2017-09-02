@@ -6,7 +6,7 @@ Pixelshop is A small Photoshop, JavaScript-based web application, which contains
 ```diff
 - This Project is developing, because just spend spare time, I predict it will acomplish main function on Dec, 2017.
 ```
-preview: https://vimcaw.github.io/Pixelshop/dist/index.html
+preview: https://vimcaw.github.io/pixelshop/dist/index.html
 
 ## 中文介绍
 
@@ -14,7 +14,7 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 ```diff
 - 此项目目前还在开发中，由于只花费业余时间进行开发，预计 2017 年 12 月完成主要功能。
 ```
-预览：https://vimcaw.github.io/Pixelshop/dist/index.html
+预览：https://vimcaw.github.io/pixelshop/dist/index.html
 
 ## Progress
 > 2017-9-2---------- V0.3.0
