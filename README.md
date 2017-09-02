@@ -17,6 +17,11 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 预览：https://vimcaw.github.io/Pixelshop/
 
 ## Progress
+> 2017-9-2---------- V0.3.0
+> * Improved Hotkey hint - menu item can display hotkey hint now;
+> * Hotkey has supported combination-key (but Alt and Shift key has some bugs);
+> * Change project building way to Webpack.
+
 > 2017-8-30 ---------- V0.2.7
 > * Added Reset Color and Exchange color button.
 > * Added HotKey function, default of Keymap is Photoshop Keymap, you can change hotkey by editing keymap.json.
@@ -52,4 +57,4 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 > * Realized basic UI.
 
 ## Import project
-1. [Color Picker](https://github.com/tovic/color-picker).
+1. [color-picker](https://github.com/tovic/color-picker).
