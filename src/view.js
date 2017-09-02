@@ -117,8 +117,8 @@ var view = (function () {
 			return false;
 		} else if (event.altKey) {
 			//如果alt键按下，缩放画布
-			var x = event.clientX - getElementViewLeft($canvas),
-				y = event.clientY = getElementViewTop($canvas);
+			var x = event.clientX - $canvas.getViewOffsetLeft(),
+				y = event.clientY - $canvas.getViewOffsetTop();
 			if (event.deltaY > 0) {
 				scale(-0.2, x, y);
 			} else {
@@ -154,8 +154,8 @@ var view = (function () {
 			$('#menu-save').enable();
 			$('#menu-saveAs').enable();
 			$canvas.onmousemove = function (event) {
-				var x = event.clientX - getElementViewLeft(this) + $view.scrollLeft,
-					y = event.clientY - getElementViewTop(this) + $view.scrollTop;
+				var x = event.clientX - this.getViewOffsetLeft() + $view.scrollLeft,
+					y = event.clientY - this.getViewOffsetTop() + $view.scrollTop;
 				$('#pos-x').innerText = Math.round(x / scaleRate);
 				$('#pos-y').innerText = Math.round(y / scaleRate);
 			}

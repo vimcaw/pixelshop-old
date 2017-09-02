@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixelshop - a small JavaScript-based Photoshop</title>
+</head>
+<body>
+    <div class="top">
+        <ul class="menu">
+            <li>
+                <div>File</div>
+                <ul>
+                    <li id="menu-new">New...</li>
+                    <li id="menu-openFromLocal">Open From Local...</li>
+                    <li id="menu-openFromUrl">Open From URL...</li>
+                    <li id="menu-close">Close</li>
+                    <hr>
+                    <li id="menu-save" class="disabled">Save</li>
+                    <li id="menu-saveAs" class="disabled">Save as...</li>
+                </ul>
+            </li>
+            <li>
+                <div>Edit</div>
+                <ul>
+                    <li>Undo</li>
+                    <li>Redo</li>
+                    <hr>
+                    <li>Copy</li>
+                    <li>Cut</li>
+                    <li>Paste</li>
+                </ul>
+            </li>
+            <!--<li>-->
+                <!--<div>Image</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Layer</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Text</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Seletion</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Filter</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>View</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div>Windows</div>-->
+            <!--</li>-->
+            <li>
+                <div>Help</div>
+                <ul>
+                    <li id="tool-about">about...</li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="window-control">
+            <li id="full-screen" class="iconfont icon-quanping"></li>
+        </ul>
+    </div>
+
+    <div class="option">
+        <span id="current-tool" class="iconfont icon-yidong checked"></span>
+        <div id="option-blush">
+            <span>size: </span><input type="range" min="1" max="200" step="1">
+        </div>
+    </div>
+
+    <div class="bottom-container">
+        <div class="tool">
+            <ul>
+                <li><div id="tool-move" class="iconfont icon-yidong checked" title="Move Tool"></div></li>
+                <li><div id="tool-crop" class="iconfont icon-tupiancaijian" title="Crop Tool"></div></li>
+                <li><div id="tool-eyedropper" class="iconfont icon-icon-straw" title="Eyedropper Tool"></div></li>
+                <li><div id="tool-blush" class="iconfont icon-icon" title="Blush Tool"></div></li>
+                <li><div id="tool-eraser" class="iconfont icon-xiangpi" title="Eraser Tool"></div></li>
+                <li><div id="tool-text" class="iconfont icon-wenben" title="Text Tool"></div></li>
+                <li><div id="tool-rect" class="iconfont icon-juxing" title="Rect Tool"></div></li>
+                <li><div id="tool-hand" class="iconfont icon-hand" title="Hand Tool"></div></li>
+                <li><div id="tool-zoom" class="iconfont icon-fangdajing" title="Zoom Tool"></div></li>
+            </ul><hr>
+            <div class="color">
+                <div id="color-reset" title="Reset Color"></div>
+                <div id="color-exchange" title="Exchange between forecolor and backcolor"></div>
+                <div id="display-color">
+                    <div id="fore-color" title="Foreground color"></div>
+                    <div id="back-color" title="Background color"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel" id="info">
+                <p>X: <span id="pos-x"></span></p>
+                <p>Y: <span id="pos-y"></span></p>
+                <p>color: <span id="color"></span></p>
+            </div>
+        </div>
+
+        <div id="view-container">
+            <ul class="title-bar">
+                <li>
+                    <span class="title"></span>
+                    <span class="fa fa-times close"></span>
+                </li>
+            </ul>
+            <div class="view"><canvas></canvas></div>
+            <div class="status">
+                <span class="canvas-size"></span>
+                @
+                <span class="canvas-scale"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="window-container">
+        <div class="window" id="canNotReadLocalFile">
+            <span class="fa fa-exclamation-triangle"></span>
+            <h1>Ooooops, your browser does not support reading local file.</h1>
+            <h2>Following 2 ways can solve it:</h2>
+            <ul>
+                <li>Use IE 11, Edge, Chrome, FireFox and open this page again.</li>
+                <li>Upload your image to some site (Google Images, Google Cloud...) and right click on your image, click "copy image link", open this page and click "File > Open From URL...", paste link to textbox.</li>
+            </ul>
+        </div>
+        <div class="window" id="openWebPicture">
+            <p>Paste URL in here:</p>
+            <input type="text">
+            <button id="preview">Preview</button>
+            <button id="confirm">confirm</button>
+            <br>
+            <img src="" alt="">
+        </div>
+        <div class="window" id="colorPicker">
+            <div id="picker-UI"></div>
+            <div class="handle">
+                <div class="row">
+                    <div class="color-comparison">
+                        <span>New</span>
+                        <div id="color-current"></div>
+                        <div id="color-before"></div>
+                        <span>Current</span>
+                    </div>
+                    <div class="button">
+                        <button class="confirm" type="button">Comfirm</button>
+                        <button class="cancel" type="button">Cancel</button>
+                    </div>
+                </div>
+                
+                <ul class="hsv">
+                    <li>H: <input id="input-h" type="number" step="1" min="0" max="360">°</li>
+                    <li>S: <input id="input-s" type="number" step="1" min="0" max="100">%</li>
+                    <li>V: <input id="input-v" type="number" step="1" min="0" max="100">%</li>
+                </ul>
+                <ul class="rgb">
+                    <li>R: <input id="input-r"  type="number" step="1" min="0" max="255"></li>
+                    <li>G: <input id="input-g" type="number" step="1" min="0" max="255"></li>
+                    <li>B: <input id="input-b" type="number" step="1" min="0" max="255"></li>
+                </ul>
+                <div class="hex">#<input id="input-hex" type="text" maxlength="6"></div>
+            </div>
+        </div>
+        <div class="window" id="about">
+            <p>Pixelshop V0.3.0</p>
+            <p><a href="https://github.com/vimcaw/Pixelshop">Github Page</a></p>
+            <p>Author: <a href="https://github.com/vimcaw">vimcaw</a></p>
+            <hr>
+            <p>Import project:</p>
+            <ul>
+                <li><a href="https://github.com/tovic/color-picker">color-picker</a></li>
+            </ul>
+        </div>
+    </div>
+<script type="text/javascript" src="app.js"></script></body>
+</html>

@@ -81,7 +81,7 @@ var tool = (function () {
 
 var toolCommandSet = (function () {
 	var eyedropper = {
-		cursor: 'url("image/Eyedropper.png"), progress',
+		// cursor: 'url("image/Eyedropper.png"), progress',
 		event: {
 			click: function (event) {
 				var x = $('#pos-x').innerText,

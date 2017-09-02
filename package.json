@@ -1,6 +1,6 @@
 {
   "name": "pixelshop",
-  "version": "0.2.8",
+  "version": "0.3.0",
   "description": "Pixelshop is A small Photoshop, JavaScript-based web application, which contains the most commonly used Photoshop features.",
   "main": "pixelshop.js",
   "scripts": {

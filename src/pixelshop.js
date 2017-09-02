@@ -6,7 +6,7 @@ import './style.css';
 import './windowsUI.css';
 import './iconfont/iconfont.css';
 import './font-awesome-4.7.0/css/font-awesome.min.css';
-import './ColorPicker/color-picker.min.css';
+import './color-picker/color-picker.min.css';
 
 import './element';
 
@@ -16,6 +16,7 @@ import './tool';
 import {$, $$} from './element';
 import {bindMenuClick, getIdSuffix, windowUIList} from './WebDesktop';
 import hotkey from './hotkey';
+import view from './view';
 
 function getlimitSize($img, maxWidth, maxHeight) {
 	var width = $img.width,
