@@ -1,10 +1,10 @@
 import {$, $$} from './element';
 import color from './color';
-import view from './view';
+import designBoardDirector from './designBoard';
 import {getIdSuffix} from './WebDesktop';
 
-export var option = (function () {
-	var $option = $('.option'),
+let option = (function () {
+	let $option = $('.option'),
 		currentTool = '',
 		$currentOption = null,
 		$currentToolDisplay = $('#current-tool');
@@ -18,31 +18,31 @@ export var option = (function () {
 	}
 })();
 
-var tool = (function () {
-	var currentTool = 'move',
+let tool = (function () {
+	let currentTool = 'move',
 		toolCommandSet = null,
 		isEnable = true;
 
 	function _forEachEvents (isAdd) {
-		if (toolCommandSet && toolCommandSet[currentTool]) {
-			let commands = toolCommandSet[currentTool],
-				keys = Object.keys(commands.event),
-				handle;
-			
-			view.$canvas.style.cursor = commands.cursor ? commands.cursor : 'default';
-
-			handle = isAdd ? 'addEventListener' : 'removeEventListener';
-
-			keys.forEach(function (item) {
-				if (item === 'keydown' || item === 'keyup') {
-					window[handle](item, commands.event[item]);
-				} else {
-					view.$canvas[handle](item, commands.event[item]);
-				}
-			});
-		} else {
-			view.$canvas.style.cursor = 'default';
-		}
+		// if (toolCommandSet && toolCommandSet[currentTool]) {
+		// 	let commands = toolCommandSet[currentTool],
+		// 		keys = Object.keys(commands.event),
+		// 		handle;
+		//
+		// 	designBoardDirector.current.$canvases.style.cursor = commands.cursor ? commands.cursor : 'default';
+        //
+		// 	handle = isAdd ? 'addEventListener' : 'removeEventListener';
+        //
+		// 	keys.forEach(function (item) {
+		// 		if (item === 'keydown' || item === 'keyup') {
+		// 			window[handle](item, commands.event[item]);
+		// 		} else {
+		// 			designBoardDirector.current.$canvas[handle](item, commands.event[item]);
+		// 		}
+		// 	});
+		// } else {
+         //    designBoardDirector.current.$canvases.style.cursor = 'default';
+		// }
 	}
 
 	function switchTool(toolId) {
@@ -52,7 +52,7 @@ var tool = (function () {
 		currentTool = toolId;
         $('#tool-' + currentTool).addClass('checked');
 		option.switchOption(toolId);
-		_forEachEvents(true);	
+		_forEachEvents(true);
 		
 	}
 	
@@ -65,7 +65,7 @@ var tool = (function () {
 		$$('.tool>ul div').forEach(function (item) {
 			item.onclick = function () {
 				switchTool(getIdSuffix(this.id));
-            }
+            };
         });
     }
 
@@ -79,14 +79,21 @@ var tool = (function () {
 	};
 })();
 
-var toolCommandSet = (function () {
-	var eyedropper = {
-		// cursor: 'url("image/Eyedropper.png"), progress',
+let toolCommandSet = (function () {
+	let blush = {
+		event: {
+			keydown: function () {
+				
+			}
+		}
+	}
+	let eyedropper = {
+		cursor: 'none',
 		event: {
 			click: function (event) {
-				var x = $('#pos-x').innerText,
+				let x = $('#pos-x').innerText,
 					y = $('#pos-y').innerText,
-					imageData = view.context.getImageData(x, y, 1, 1);
+					imageData = designBoardDirector.current.context.getImageData(x, y, 1, 1);
 
 				color.setForeColor(color.RGB2HEX(imageData.data));
 			}
@@ -94,8 +101,8 @@ var toolCommandSet = (function () {
 		
 	};
 
-	var hand = (function () {
-		var _isKeyDown = false;
+	let hand = (function () {
+		let _isKeyDown = false;
 
 		function keydown (event) {
 			_isKeyDown = true;
@@ -116,25 +123,25 @@ var toolCommandSet = (function () {
 		};
 	})();
 
-	var zoom = (function () {
-		var _isZoomIn = true,
+	let zoom = (function () {
+		let _isZoomIn = true,
 			_scaleRate = 0.2,
 			cursor = 'zoom-in';
 		function click (event) {
-			var rate = _isZoomIn ? _scaleRate : (-1 * _scaleRate);
-			view.scale(rate, event.clientX, event.clientY);
+			let rate = _isZoomIn ? _scaleRate : (-1 * _scaleRate);
+			designBoardDirector.current.scale(rate, event.clientX, event.clientY);
 		}
 		function keydown (event) {
 			if (event.altKey) {
 				_isZoomIn = false;
-				view.$canvas.style.cursor = 'zoom-out';
+				designBoardDirector.current.$canvas.style.cursor = 'zoom-out';
 			}
 			event.preventDefault();
 		}
 		function keyup () {
 			if (!_isZoomIn) {
 				_isZoomIn = true;
-				view.$canvas.style.cursor = 'zoom-in';
+				designBoardDirector.current.$canvas.style.cursor = 'zoom-in';
 			}
 		}
 

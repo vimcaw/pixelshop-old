@@ -100,6 +100,8 @@ export var color = (function () {
 			windowForm.find('#input-h').value = hsv[0];
 			windowForm.find('#input-s').value = hsv[1];
 			windowForm.find('#input-v').value = hsv[2];
+
+			_tempColor = color;
 		}
 
 		function _updateColor ($input) {
@@ -148,7 +150,7 @@ export var color = (function () {
 		}
 
 		function close () {
-			windowForm.close()
+			windowForm.close();
 		}
 
 		return {

@@ -9,14 +9,14 @@ import './font-awesome-4.7.0/css/font-awesome.min.css';
 import './color-picker/color-picker.min.css';
 
 import './element';
-
+import './start';
 import './common';
 import './tool';
 
 import {$, $$} from './element';
 import {bindMenuClick, getIdSuffix, windowUIList} from './WebDesktop';
 import hotkey from './hotkey';
-import view from './view';
+import designBoardDirector from './designBoard';
 
 function getlimitSize($img, maxWidth, maxHeight) {
 	var width = $img.width,
@@ -68,7 +68,7 @@ var commandSet = {
 					file = this.files[0];
 				reader.readAsDataURL(file);
 				reader.onload = function() {
-					view.load(this.result, file.name);
+					designBoardDirector.create(this.result, file.name);
 				}
 			}
 		};
@@ -85,7 +85,7 @@ var commandSet = {
 			}
 		};
 		windowForm.find('#confirm').onclick = function () {
-			view.load(windowForm.find('input').value);
+            designBoardDirector.create(windowForm.find('input').value);
 			windowForm.close();
 		};
 	},
@@ -103,7 +103,7 @@ var commandSet = {
 		imageFormat = result && result[result.length - 1].substring(1);
 		downloader.download = imageName;
 
-		downloader.href = view.$canvas.toDataURL('image/' + format[imageFormat]);
+		downloader.href = designBoardDirector.current.$canvas.toDataURL('image/' + format[imageFormat]);
 		document.body.appendChild(downloader);
 		downloader.click();
 	},

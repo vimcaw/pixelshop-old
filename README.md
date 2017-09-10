@@ -17,9 +17,14 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 预览：https://vimcaw.github.io/pixelshop/dist/index.html
 
 ## Progress
-> 2017-9-2---------- V0.3.0
-> * Improved Hotkey hint - menu item can display hotkey hint now;
-> * Hotkey has supported combination-key (but Alt and Shift key has some bugs);
+> 2017-9-10 ---------- V0.3.5
+> * Multi File operate meanwhile.
+> * Start Page UI - better way to guide.
+> * Logo has been added to page.
+
+> 2017-9-2 ---------- V0.3.0
+> * Improved Hotkey hint - menu item can display hotkey hint now.
+> * Hotkey has supported combination-key (but Alt and Shift key has some bugs).
 > * Change project building way to Webpack.
 
 > 2017-8-30 ---------- V0.2.7

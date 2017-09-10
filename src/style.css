@@ -4,6 +4,7 @@ html, body{
     background: #2c2c2c;
     color: #f0f0f0;
     overflow: hidden;
+    cursor: default;
 }
 
 a, a:visited{
@@ -30,7 +31,10 @@ a, a:visited{
 
 /*Common Style*/
 .hide{
-    display: none;
+    visibility: collapse;
+}
+.appear{
+    visibility: visible;
 }
 .block-all{
     position: fixed;
@@ -52,7 +56,7 @@ a, a:visited{
     display: inline-block;
 }
 button{
-    padding: 0.3em 1em;
+    padding: 0.5em 1em;
     background: #3b3b3b;
     color: #f0f0f0;
     border-radius: 0.5em;
@@ -61,6 +65,9 @@ button{
 }
 button:hover{
     background: #2c2c2c;
+}
+.fa:before{
+    margin-right: 0.5em;
 }
 /*全局样式*/
 .top, .option, .tool, .panel{
@@ -80,6 +87,136 @@ button:hover{
     background: #535353;
 }
 
+#welcome{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 3em;
+    background: #212121;
+    z-index: 100;
+}
+#welcome .header{
+    margin-bottom: 2em;
+}
+#welcome .header img{
+    width: 5em;
+    height: 5em;
+    vertical-align: -1em;
+}
+#welcome .header h1{
+    display: inline-block;
+    margin-left: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: 3em;
+}
+#welcome .header p{
+    display: inline-block;
+    margin-left: 1em;
+}
+#welcome .header>.logo, #welcome .header>ul{
+    display: inline-block;
+}
+#welcome .header>ul{
+    margin-left: 5em;
+}
+#welcome .header>ul>li{
+    position: relative;
+    transition: all .8s;
+}
+#welcome .header>ul>li>ul{
+    display: none;
+}
+#welcome .header>ul>li:hover>ul{
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 2em;
+    z-index: 500;
+}
+#welcome .header>ul>li:hover>ul>li{
+    display: block;
+}
+#welcome .header ul li{
+    display: inline-block;
+    padding: 0.5em 1em;
+    background: #262439;
+    white-space: nowrap;
+}
+#welcome .header ul li:hover{
+    background: #2e2b47;
+}
+#welcome .header ul li a{
+    text-decoration: none;
+    color: #ffffff;
+}
+#welcome ul{
+    list-style-type: none;
+}
+#welcome .handle, #welcome .recent-file{
+    display: inline-block;
+    vertical-align: top;
+}
+#welcome .handle{
+    padding-top: 3em;
+}
+#welcome .handle li{
+    padding: 0.5em 0;
+}
+#welcome .recent-file{
+    margin-left: 3em;
+}
+#welcome .recent-file ul{
+    position: absolute;
+    top: 16em;
+    right: 10em;
+    bottom: 10em;
+    left: 15em;
+    padding: 0.5em;
+    overflow: auto;
+    /*border: 1px solid #6a6a6a;*/
+    background: #262626;
+}
+#welcome .recent-file li{
+    display: inline-block;
+    margin: 0.5em;
+}
+#welcome .recent-file li{
+    width: 10em;
+    padding: 1em 2em;
+    background: #2c2c2c;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-align: center;
+}
+#welcome .recent-file li:hover{
+    border-color: #8F8F8F;
+}
+#welcome .recent-file img{
+    width: 6em;
+    height: 6em;
+    background: #B8B8B8;
+}
+#welcome .recent-file .info{
+    text-align: left;
+}
+#welcome .recent-file .date{
+    font-size: 0.8em;
+    line-height: 0.1em;
+    color: #616161;
+}
+#welcome .recent-file #empty-recent-file{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    background: none;
+    border: none;
+    cursor: default;
+    white-space: nowrap;
+}
 /* 菜单 */
 .menu>li li.hasHotkey{
     position: relative;
@@ -201,53 +338,78 @@ button:hover{
 }
 
 /*画布*/
-#view-container{
+#design-boards{
     position: relative;
     height: 100%;
     margin: 0 15em 0 2.4em;
     z-index: 1;
     overflow: hidden;
 }
-#view-container ul.title-bar{
+#design-boards ul{
     font-size: 0.8em;
     margin-bottom: 0.2em;
     list-style-type: none;
     background: #3b3b3b;
 }
-#view-container ul.title-bar li{
+#design-boards li{
     display: inline-block;
-    background: #535353;
+    margin-right: 0.2em;
+}
+
+#design-boards .title-bar{
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    background: #404040;
     cursor: default;
 }
-#view-container ul.title-bar li span{
-    margin: 0.4em 0.5em;
+#design-boards .title-bar:hover{
+    background: #454545;
 }
-#view-container ul.title-bar li .close{
-    padding: 0.1em;
-    margin-left: 0;
+#design-boards li.active .title-bar, #design-boards li.active .title-bar:hover{
+    background: #535353;
+}
+#design-boards span.title{
+    overflow-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+}
+#design-boards .title-bar span{
+    display: inline-block;
+    margin: 0.2em 0.5em;
+    font-size: 0.8em;
     vertical-align: middle;
 }
-#view-container ul.title-bar li .close:hover{
-    background: #ff5458;
+#design-boards .title-bar .close{
+    padding: 0.2em;
+    margin-left: 0; 
+}
+#design-boards .title-bar .close:hover{
+    background: #C11D21;
     border-radius: 50%;
 }
-#view-container canvas{
-    transform-origin: 0 0;
-}
-#view-container .view{
+#design-boards .board{
     position: absolute;
     top: 2em;
+    left: 0;
     bottom: 1.6em;
     width: 100%;
     overflow: scroll;
+    margin: 0;
+    visibility: collapse;
 }
-#view-container .disable-scroll-x{
+#design-boards li.active .board{
+    visibility: visible;
+}
+#design-boards canvas{
+    transform-origin: 0 0;
+}
+#design-boards .disable-scroll-x{
     overflow-x: hidden;
 }
-#view-container .disable-scroll-y{
+#design-boards .disable-scroll-y{
     overflow-y: hidden;
 }
-#view-container .status{
+#design-boards .status{
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -289,6 +451,31 @@ button:hover{
     margin: 0;
     padding-left: 15px;
     line-height: 30px;
+}
+/* 自定义面板样式 */
+#layer{
+    height: 50%;
+}
+#layer li{
+    list-style-type: none;
+    background: #404040;
+    padding: 0.2em 1em;
+    margin: 0.2em 0;
+    font-size: 0.8em;
+}
+#layer li *{
+    display: inline-block;
+    margin: 0 0.2em;
+    vertical-align: middle;
+}
+#layer li img{
+    width: 3em;
+    height: 2em;
+}
+#layer li .hidden{
+    width: 1em;
+    height: 1em;
+    background: #535353;
 }
 
 /*自定义样式*/

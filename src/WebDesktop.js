@@ -217,7 +217,7 @@ function bindMenuClick ($menuUl, commandSet) {
 	var $ul_2 = $menuUl.getElementsByTagName('ul');
 	forEach($ul_2, function (item) { 
 		item.onclick = function () {
-			item.addClass('hide');
+			// item.addClass('hide');
 		}
 	});
 }

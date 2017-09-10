@@ -2,9 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pixelshop - a small JavaScript-based Photoshop</title>
-</head>
+    <title>Pixelshop - a small JavaScript-based Phtoshop</title>
+    <link rel="shortcut icon" href="22ef1c5022f38ca5bf951b0697222c89.png" type="image/png">
+    <link rel="icon" href="22ef1c5022f38ca5bf951b0697222c89.png" type="image/png">
+    <!--<link rel="stylesheet" href="./styles.css">-->
+<link href="styles.css" rel="stylesheet"></head>
 <body>
+    <div id="welcome">
+        <div class="header">
+            <div class="logo">
+                <img src="22ef1c5022f38ca5bf951b0697222c89.png" alt="">
+                <h1>Pixelshop</h1>
+                <p> - a small JavaScript-based Phtoshop</p>
+            </div>
+            <ul class="about">
+                <li class="fa fa-github"><a href="https://github.com/vimcaw/pixelshop">Change Log & Srouce Code</a></li>
+                <li class="fa fa-commenting">
+                    <span>Feedback</span>
+                    <ul>
+                        <li class="fa fa-github"><a href="https://github.com/vimcaw/pixelshop/issues">GitHub Issues</a></li>
+                        <li class="fa fa-envelope"><a href="mailto:vimcaw@gmail.com">vimcaw@gmail.com</a></li>
+                    </ul>
+                </li>
+                <li class="fa fa-github"><a href="https://github.com/vimcaw">My GitHub</a></li>
+                <li class="fa fa-globe"><a href="https://vimcaw.github.io/blog/">My blog</a></li>
+            </ul>
+        </div>
+        <ul class="handle">
+            <li><button type="button" id="welcome-new">New...</button></li>
+            <li>
+                <button type="button" id="welcome-openFromLocal">Open From Local...</button>
+            </li>
+            <li>
+                <button type="button" id="welcome-openFromUrl">Open From URL...</button>
+            </li>
+        </ul>
+        <div class="recent-file">
+            <p>Recent file</p>
+            <ul>
+                <li id="empty-recent-file">You doesn't open any image.</li>
+            </ul>
+        </div>
+    </div>
     <div class="top">
         <ul class="menu">
             <li>
@@ -99,16 +138,27 @@
                 <p>Y: <span id="pos-y"></span></p>
                 <p>color: <span id="color"></span></p>
             </div>
+            <div class="panel" id="layer">
+                <ul>
+                    <li>
+                        <div class="hidden"></div>
+                        <img class="thumbs">
+                        <span class="name">Layer1</span>
+                    </li>
+                    <li>
+                        <div class="fa fa-eye"></div>
+                        <img class="thumbs">
+                        <span class="name">Background</span>
+                    </li>
+                </ul>
+                <div class="handle"></div>
+            </div>
         </div>
 
-        <div id="view-container">
-            <ul class="title-bar">
-                <li>
-                    <span class="title"></span>
-                    <span class="fa fa-times close"></span>
-                </li>
+        <div id="design-boards">
+            <ul>
+
             </ul>
-            <div class="view"><canvas></canvas></div>
             <div class="status">
                 <span class="canvas-size"></span>
                 @
@@ -123,7 +173,7 @@
             <h1>Ooooops, your browser does not support reading local file.</h1>
             <h2>Following 2 ways can solve it:</h2>
             <ul>
-                <li>Use IE 11, Edge, Chrome, FireFox and open this page again.</li>
+                <li>Use IE 11, Edge, Chrome(recommand), FireFox and open this page again.</li>
                 <li>Upload your image to some site (Google Images, Google Cloud...) and right click on your image, click "copy image link", open this page and click "File > Open From URL...", paste link to textbox.</li>
             </ul>
         </div>
@@ -133,7 +183,7 @@
             <button id="preview">Preview</button>
             <button id="confirm">confirm</button>
             <br>
-            <img src="" alt="">
+            <img src="xxxHTMLLINKxxx0.99661113960837830.9621974637825583xxx" alt="">
         </div>
         <div class="window" id="colorPicker">
             <div id="picker-UI"></div>
@@ -165,7 +215,7 @@
             </div>
         </div>
         <div class="window" id="about">
-            <p>Pixelshop V0.3.0</p>
+            <p>Pixelshop V0.3.5</p>
             <p><a href="https://github.com/vimcaw/Pixelshop">Github Page</a></p>
             <p>Author: <a href="https://github.com/vimcaw">vimcaw</a></p>
             <hr>
