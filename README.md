@@ -2,7 +2,7 @@
 
 ## English intro
 
-Pixelshop is A small Photoshop, JavaScript-based web application, which contains the most commonly used Photoshop features.
+Pixelshop is A small Photoshop, Vue.js-based web application, which contains the most commonly used Photoshop features.
 ```diff
 - This Project is developing, because just spend spare time, I predict it will acomplish main function on Dec, 2017.
 ```
