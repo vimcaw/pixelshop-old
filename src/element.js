@@ -109,4 +109,12 @@ Element.prototype.playAnimation = function ( classBefore, classAfter) {
 			this.className = classAfter;
 		});
 	});
-}
+};
+
+String.prototype.trimLength = function (length) {
+    if (this.length > length) {
+        return this.substr(0, length) + '...';
+    } else {
+        return this;
+    }
+};

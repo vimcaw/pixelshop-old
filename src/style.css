@@ -1,10 +1,17 @@
 html, body{
     width: 100%;
     height: 100%;
+    margin: 0;
     background: #2c2c2c;
     color: #f0f0f0;
     overflow: hidden;
     cursor: default;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 a, a:visited{
@@ -35,14 +42,6 @@ a, a:visited{
 }
 .appear{
     visibility: visible;
-}
-.block-all{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
 }
 .twinkle-border{
     animation: .15s twinkleBorder;
@@ -84,190 +83,11 @@ button:hover{
     background: #3b3b3b;
 }
 ::-webkit-scrollbar-thumb{
-    background: #535353;
+    background: #616161;
 }
 
-#welcome{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding: 3em;
-    background: #212121;
-    z-index: 100;
-}
-#welcome .header{
-    margin-bottom: 2em;
-}
-#welcome .header img{
-    width: 5em;
-    height: 5em;
-    vertical-align: -1em;
-}
-#welcome .header h1{
-    display: inline-block;
-    margin-left: 0.5em;
-    margin-bottom: 0.5em;
-    font-size: 3em;
-}
-#welcome .header p{
-    display: inline-block;
-    margin-left: 1em;
-}
-#welcome .header>.logo, #welcome .header>ul{
-    display: inline-block;
-}
-#welcome .header>ul{
-    margin-left: 5em;
-}
-#welcome .header>ul>li{
-    position: relative;
-    transition: all .8s;
-}
-#welcome .header>ul>li>ul{
-    display: none;
-}
-#welcome .header>ul>li:hover>ul{
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 2em;
-    z-index: 500;
-}
-#welcome .header>ul>li:hover>ul>li{
-    display: block;
-}
-#welcome .header ul li{
-    display: inline-block;
-    padding: 0.5em 1em;
-    background: #262439;
-    white-space: nowrap;
-}
-#welcome .header ul li:hover{
-    background: #2e2b47;
-}
-#welcome .header ul li a{
-    text-decoration: none;
-    color: #ffffff;
-}
-#welcome ul{
-    list-style-type: none;
-}
-#welcome .handle, #welcome .recent-file{
-    display: inline-block;
-    vertical-align: top;
-}
-#welcome .handle{
-    padding-top: 3em;
-}
-#welcome .handle li{
-    padding: 0.5em 0;
-}
-#welcome .recent-file{
-    margin-left: 3em;
-}
-#welcome .recent-file ul{
-    position: absolute;
-    top: 16em;
-    right: 10em;
-    bottom: 10em;
-    left: 15em;
-    padding: 0.5em;
-    overflow: auto;
-    /*border: 1px solid #6a6a6a;*/
-    background: #262626;
-}
-#welcome .recent-file li{
-    display: inline-block;
-    margin: 0.5em;
-}
-#welcome .recent-file li{
-    width: 10em;
-    padding: 1em 2em;
-    background: #2c2c2c;
-    cursor: pointer;
-    border: 1px solid transparent;
-    text-align: center;
-}
-#welcome .recent-file li:hover{
-    border-color: #8F8F8F;
-}
-#welcome .recent-file img{
-    width: 6em;
-    height: 6em;
-    background: #B8B8B8;
-}
-#welcome .recent-file .info{
-    text-align: left;
-}
-#welcome .recent-file .date{
-    font-size: 0.8em;
-    line-height: 0.1em;
-    color: #616161;
-}
-#welcome .recent-file #empty-recent-file{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    background: none;
-    border: none;
-    cursor: default;
-    white-space: nowrap;
-}
-/* 菜单 */
-.menu>li li.hasHotkey{
-    position: relative;
-    padding-right: 10em !important;
-}
-.menu li.hasHotkey span.hotkey-hint{
-    position: absolute;
-    top: 0.25em;
-    right: 1em;
-    font-size: 0.8rem;
-    color: #B8B8B8;
-}
 
-/*窗口操作按钮*/
-.window-control li{
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5em;
-}
-.window-control li:hover{
-    background: #2c2c2c;
-}
 
-/*选项栏*/
-.option{
-    height: 2em;
-    margin: 0.2em 0;
-    padding-left: 0.5em;
-    background: #535353;
-    font-size: 1em;
-}
-
-.option div{
-    display: none;
-}
-.option div.actived{
-    display: inline-block;
-}
-.option *{
-    display: inline;
-    margin: 0 5px;
-    padding: 0;
-    line-height: 30px;
-}
-
-.option #current-tool{
-    font-size: 1em;
-    line-height: 2em;
-}
 
 /*底部区域容器*/
 .bottom-container{
@@ -278,147 +98,6 @@ button:hover{
     overflow: hidden;
 }
 
-/*工具栏*/
-.tool{
-    float: left;
-    width: 2.2em;
-    height:100%;
-}
-.tool>ul{
-    list-style-type: none;
-}
-.tool>ul div{
-    display: inline-block;
-    font-size: 1em;
-    padding: 0.4em;
-    margin: 0.2em;
-}
-.tool>ul div:hover{
-    background: #404040;
-}
-.tool>ul div.checked{
-    background: #2c2c2c;
-}
-.tool .color #color-reset, .tool .color #color-exchange{
-    display: inline-block;
-    width: 0.7em;
-    height: 0.7em;
-    padding: 0.1em;
-    margin-bottom: 0.2em;
-}
-.tool .color #color-reset{
-    background: url("image/ResetColor.svg");
-}
-.tool .color #color-exchange{
-    background: url("image/ExchangeColor.svg");
-
-}
-.tool #display-color{
-    position: relative;
-}
-.tool .color #display-color div{
-    position: absolute;
-    width: 1em;
-    height: 1em;
-}
-.tool .color #display-color #fore-color{
-    left: 0.3em;
-    background: #000;
-    border: 0.05em solid #fff;
-    outline: 0.1em solid #000;
-    z-index: 1;
-}
-.tool .color #display-color #back-color{
-    top: 0.7em;
-    right: 0.3em;
-    background: #fff;
-    border: 0.05em solid #fff;
-    outline: 0.1em solid #000;
-    z-index: 0;
-}
-
-/*画布*/
-#design-boards{
-    position: relative;
-    height: 100%;
-    margin: 0 15em 0 2.4em;
-    z-index: 1;
-    overflow: hidden;
-}
-#design-boards ul{
-    font-size: 0.8em;
-    margin-bottom: 0.2em;
-    list-style-type: none;
-    background: #3b3b3b;
-}
-#design-boards li{
-    display: inline-block;
-    margin-right: 0.2em;
-}
-
-#design-boards .title-bar{
-    display: inline-block;
-    padding: 0.2em 0.5em;
-    background: #404040;
-    cursor: default;
-}
-#design-boards .title-bar:hover{
-    background: #454545;
-}
-#design-boards li.active .title-bar, #design-boards li.active .title-bar:hover{
-    background: #535353;
-}
-#design-boards span.title{
-    overflow-wrap: break-word;
-    word-break: break-all;
-    overflow: hidden;
-}
-#design-boards .title-bar span{
-    display: inline-block;
-    margin: 0.2em 0.5em;
-    font-size: 0.8em;
-    vertical-align: middle;
-}
-#design-boards .title-bar .close{
-    padding: 0.2em;
-    margin-left: 0; 
-}
-#design-boards .title-bar .close:hover{
-    background: #C11D21;
-    border-radius: 50%;
-}
-#design-boards .board{
-    position: absolute;
-    top: 2em;
-    left: 0;
-    bottom: 1.6em;
-    width: 100%;
-    overflow: scroll;
-    margin: 0;
-    visibility: collapse;
-}
-#design-boards li.active .board{
-    visibility: visible;
-}
-#design-boards canvas{
-    transform-origin: 0 0;
-}
-#design-boards .disable-scroll-x{
-    overflow-x: hidden;
-}
-#design-boards .disable-scroll-y{
-    overflow-y: hidden;
-}
-#design-boards .status{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    font-size: 0.8em;
-    line-height: 1.8em;
-    background: #535353;
-    padding-left: 1em;
-    margin-top: 0.2em;
-}
 
 /*面板*/
 .panel-group{
@@ -453,102 +132,5 @@ button:hover{
     line-height: 30px;
 }
 /* 自定义面板样式 */
-#layer{
-    height: 50%;
-}
-#layer li{
-    list-style-type: none;
-    background: #404040;
-    padding: 0.2em 1em;
-    margin: 0.2em 0;
-    font-size: 0.8em;
-}
-#layer li *{
-    display: inline-block;
-    margin: 0 0.2em;
-    vertical-align: middle;
-}
-#layer li img{
-    width: 3em;
-    height: 2em;
-}
-#layer li .hidden{
-    width: 1em;
-    height: 1em;
-    background: #535353;
-}
 
 /*自定义样式*/
-#about{
-    text-align: center;
-    padding-left: 5em;
-    padding-right: 5em;
-}
-
-#canNotReadLocalFile{
-    width: 40em;
-}
-#canNotReadLocalFile span{
-    float: left;
-    font-size: 9em;
-}
-#canNotReadLocalFile ul, #canNotReadLocalFile h2{
-    clear: both;
-}
-/* Color Picker */
-.color-picker.static{
-    display:inline-block !important;
-    position:static !important;
-    top:0 !important;
-    left:0 !important;
-}
-.color-picker.static *{
-    margin: 0;
-}
-.color-picker-control{
-    border: none !important;
-    box-shadow: none !important;
-}
-.color-picker-sv, .color-picker-h{
-    height: 15em !important;
-    border: 0.1em solid #000 !important;
-}
-.color-picker-sv{
-    width: 15em !important;
-}
-.color-picker-h{
-    width: 1.5em !important;
-    margin-left: 1em !important;
-}
-#colorPicker #picker-UI, #colorPicker .handle, #colorPicker ul{
-    display: inline-block;
-}
-#colorPicker #picker-UI{
-    height: 100%;
-}
-#colorPicker ul{
-    list-style-type: none;
-}
-#colorPicker .hsv input, #colorPicker .rgb input{
-    width: 3em;
-}
-#colorPicker .hex input{
-    width: 5em;
-}
-#colorPicker .button button{
-    display: block;
-    margin: 1em;
-}
-#colorPicker .color-comparison{
-    text-align: center;
-    margin: 0 1.2em;
-}
-#colorPicker .color-comparison div{
-    width: 4em;
-    height: 2em;
-    background: #000;
-    margin: 0;
-}
-#colorPicker .row div{
-    vertical-align: middle;
-}

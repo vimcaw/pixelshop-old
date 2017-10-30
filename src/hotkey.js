@@ -1,4 +1,4 @@
-import {$, $$} from './element';
+import {$,} from './element';
 
 /**
 * 快捷键对象，负责管理快捷键
@@ -77,5 +77,28 @@ var hotkey = (function () {
        addHotkeyHint: addHotkeyHint
    }
 })();
+
+let defaultKeymap = {
+    menu: {
+        new: '',
+        openFromLocal: 'Ctrl+O'
+    },
+    tool: {
+        move: 'V',
+        crop: 'C',
+        eyedropper: 'I',
+        blush: 'B',
+        eraser: 'E',
+        text: 'T',
+        rect: 'U',
+        hand: 'H',
+        zoom: 'Z'
+    },
+    color: {
+        reset: 'D',
+        exchange: 'X'
+    }
+};
+
 
 export default hotkey;

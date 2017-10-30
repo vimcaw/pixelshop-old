@@ -17,9 +17,15 @@ Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的
 预览：https://vimcaw.github.io/pixelshop/dist/index.html
 
 ## Progress
+> 2017-10-30 ---------- V0.4.0
+> * From this version on, use Vue.js to develop this project.
+> * Layer feature - multi-layers operation.
+> * Recent file - you can find the files you opened recently.
+> * Transparency Grid - the part of transparent will be displayed as it.
+
 > 2017-9-10 ---------- V0.3.5
-> * Multi File operate meanwhile.
-> * Start Page UI - better way to guide.
+> * Multi-file operation.
+> * Welcome Page UI - better way to guide.
 > * Logo has been added to page.
 
 > 2017-9-2 ---------- V0.3.0
