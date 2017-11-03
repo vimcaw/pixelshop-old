@@ -10,7 +10,7 @@ preview: https://vimcaw.github.io/pixelshop/dist/index.html
 
 ## 中文介绍
 
-Pixelshop 是一个小型的 Photoshop，一个基于原生 JavaScript 实现的 Web 应用，它包含了 Photoshop 最常用的功能。
+Pixelshop 是一个小型的 Photoshop，一个基于 Vue.js 实现的 Web 应用，它包含了 Photoshop 最常用的功能。
 ```diff
 - 此项目目前还在开发中，由于只花费业余时间进行开发，预计 2017 年 12 月完成主要功能。
 ```
