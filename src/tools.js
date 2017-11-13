@@ -8,6 +8,7 @@ export default {
     },
     Eyedropper: {
         icon: 'icon-icon-straw',
+        cursor: 'url("./cursor/Eyedropper.cur"), auto',
         onclick(event) {
         // let x = $('#pos-x').innerText,
         //     y = $('#pos-y').innerText,
@@ -33,6 +34,7 @@ export default {
     },
     Zoom: {
         icon: 'icon-fangdajing',
+        cursor: 'zoom-in',
         onkeydown() {
             if (event.altKey) {
                 alert('here')

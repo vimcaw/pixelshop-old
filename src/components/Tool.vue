@@ -49,7 +49,7 @@
         },
         computed: {
             activeTool() {
-                return this.$store.state.activeTool;
+                return this.$store.getters.activeTool;
             },
             foreColorStyle() {
                 return {
@@ -78,7 +78,6 @@
                 } else {
                     Nox.openWindow('Color Picker', 'backColor');
                 }
-
             }
         }
     }

@@ -7,7 +7,6 @@
         <div class="board"
              v-show="isActive"
              @wheel="onwheel"
-             @mousedown="onmousedown"
              ref="board"
         >
             <ul
@@ -15,6 +14,7 @@
                     :style="canvasesStyle"
                     @mouseup="onmouseup"
                     @keydown="onkeydown"
+                    @mousedown="onmousedown"
                     ref="canvasContainer"
             >
                 <li class="transparency-grid">
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+    import tools from '../tools';
+
     function renderTransparencyGrid(canvas) {
         let context = canvas.getContext("2d");
 
@@ -63,7 +65,11 @@
         data() {
             return {
                 scaling: 1,
-                pos: 'absolute'
+                pos: 'absolute',
+                left: '50%',
+                top: '50%',
+                marginLeft: -1 * this.backgroundImage.width / 2,
+                marginTop: -1 * this.backgroundImage.height / 2
             }
         },
         mounted() {
@@ -84,22 +90,14 @@
                 set(value) {
                     this.scaling = value;
                     this.scaling = this.scaling > 32 ? 32 : this.scaling;
-                    this.scaling = this.scaling < 0.2 ? 0.2 : this.scaling;
+                    this.scaling = this.scaling < 0.1 ? 0.1 : this.scaling;
 
+                    //强制重新渲染，修复滚动条不出现或不消失的 Bug
                     this.pos = 'relative';
-
                     let _this = this;
                     setTimeout(function () {
                         _this.pos = 'absolute';
-                    }, 1000);
-
-                    let isOverflowOfWidth = this.$refs.canvasContainer.offsetWidth > this.$refs.board.offsetWidth;
-                    let isOverflowOfHight = this.$refs.canvasContainer.offsetHeight > this.$refs.board.offsetHeight;
-
-                    if (isOverflowOfWidth || isOverflowOfHight)
-                    {
-                        this.pos = 'relative';
-                    }
+                    }, 0);
                 }
             },
             width() {
@@ -111,8 +109,13 @@
             canvasesStyle() {
                 return {
                     position: this.pos,
+//                    cursor: this.$store.getters.activeTool.cursor,
                     width: this.backgroundImage.width + "px",
                     height: this.backgroundImage.height + "px",
+                    left: this.left,
+                    top: this.top,
+                    marginLeft: this.marginLeft + 'px',
+                    marginTop: this.marginTop + 'px',
                     transform: 'scale(' + this.scaling + ')'
                 }
             },
@@ -132,32 +135,58 @@
             close() {
                 this.$emit('close');
             },
+            scalingUp(increament, X, Y) {
+                let oldScaling = this.scaling;
+                this.changeScaling += increament;
+
+                let isInnerOfWidth = this.width * this.scaling < this.$refs.board.offsetWidth;
+                let isInnerOfHight = this.height * this.scaling < this.$refs.board.offsetHeight;
+
+                if (isInnerOfWidth) {
+                    this.left = '50%';
+                    this.marginLeft = -1 * this.width * this.scaling / 2;
+                } else {
+                    this.left = 0;
+                    this.marginLeft = 20;
+//                    this.$refs.board.scrollLeft = this.scaling * (this.$refs.board.scrollLeft + X) / oldScaling - X;
+                }
+
+                if (isInnerOfHight) {
+                    this.top = '50%';
+                    this.marginTop = -1 * this.height * this.scaling / 2;
+                } else {
+                    this.top = 0;
+                    this.marginTop = 20;
+//                    this.$refs.board.scrollTop = this.scaling * (this.$refs.board.scrollTop + Y) / oldScaling - Y;
+                }
+            },
             onmouseup(event) {
 
             },
             onmousedown(event) {
-                this.activeTool.onmousedown && this.activeTool.onmousedown(event);
+                let activeTool = this.$store.getters.activeTool;
+                activeTool.onmousedown && activeTool.onmousedown(event, this.$refs.canvas);
             },
             onkeydown(event) {
 
             },
             onwheel(event) {
-                let canvasContainer = this.$refs.canvasContainer;
+                let board = this.$refs.board;
                 if (event.ctrlKey) {
                     //如果ctrl键按下，滑动滚轮左右移动画布
                     if (event.deltaY > 0) {
-                        canvasContainer.scrollLeft += 200;
+                        board.scrollLeft += 200;
                     } else {
-                        canvasContainer.scrollLeft -= 200;
+                        board.scrollLeft -= 200;
                     }
                     event.preventDefault();
                     return false;
                 } else if (event.altKey) {
                     //如果alt键按下，缩放画布
-                    if (event.deltaY > 0) {
-                        this.changeScaling -= 0.4;
+                    if (event.deltaY < 0) {
+                        this.scalingUp(0.4, event.screenX, event.screenY);
                     } else {
-                        this.changeScaling += 0.4;
+                        this.scalingUp(-0.4, event.screenX, event.screenY);
                     }
                     event.preventDefault();
                     return false;
@@ -217,17 +246,21 @@
     ul.canvases{
         position: relative;
         transform-origin: 0 0;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        -webkit-transition: all .5s;
+        -moz-transition: all .5s;
+        -ms-transition: all .5s;
+        -o-transition: all .5s;
+        transition: all .5s;
     }
     ul.canvases li{
         position: absolute;
         top: 0;
         left: 0;
     }
-    disable-scroll-x{
-        overflow-x: hidden;
-    }
-    .disable-scroll-y{
-        overflow-y: hidden;
+    .eyedropper, ul.canvases{
+        cursor: url("../cursor/Eyedropper.cur"), auto
     }
     .status{
         position: absolute;
