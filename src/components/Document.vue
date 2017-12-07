@@ -12,16 +12,24 @@
             <ul
                     class="canvases"
                     :style="canvasesStyle"
+                    :class="classOfCanvases"
                     @mouseup="onmouseup"
-                    @keydown="onkeydown"
                     @mousedown="onmousedown"
                     ref="canvasContainer"
             >
                 <li class="transparency-grid">
                     <canvas ref="transparencyGrid" :width="width" :height="height"></canvas>
                 </li>
-                <li v-show="layer.isVisible" v-for="layer in layers" :key="layer.id">
-                    <canvas ref="canvases"></canvas>
+                <li
+                        :is="'DocumentLayer'"
+                        v-show="layer.isVisible"
+                        v-for="layer in layers"
+                        :key="layer.id"
+                        :id="layer.id"
+                        :image="layer.image"
+                        @update="update"
+                        ref="canvases"
+                >
                 </li>
             </ul>
         </div>
@@ -30,32 +38,14 @@
 </template>
 
 <script>
+    import DocumentLayer from './DocumentLayer.vue'
     import tools from '../tools';
-
-    function renderTransparencyGrid(canvas) {
-        let context = canvas.getContext("2d");
-
-        let canvasForPattern = document.createElement('canvas');
-        let contextForPattern = canvasForPattern.getContext('2d');
-        const rectSize = 10;
-        canvasForPattern.width = rectSize * 2;
-        canvasForPattern.height = rectSize * 2;
-
-        contextForPattern.fillStyle = '#ffffff';
-        contextForPattern.fillRect(0, 0, rectSize, rectSize);
-        contextForPattern.fillStyle = '#cccccc';
-        contextForPattern.fillRect(rectSize, 0, rectSize, rectSize);
-
-        contextForPattern.fillStyle = '#cccccc';
-        contextForPattern.fillRect(0, rectSize, rectSize, rectSize);
-        contextForPattern.fillStyle = '#ffffff';
-        contextForPattern.fillRect(rectSize, rectSize, rectSize, rectSize);
-
-        context.fillStyle = context.createPattern(canvasForPattern, 'repeat');
-        context.fillRect(0, 0, canvas.width, canvas.height);
-    }
+    import color from '../color';
 
     export default {
+        components: {
+            DocumentLayer: DocumentLayer
+        },
         props: {
             isActive: Boolean,
             fileName: String,
@@ -65,24 +55,38 @@
         data() {
             return {
                 scaling: 1,
+                combinedCanvas: document.createElement('canvas'),
+                layerImages: [],
+                width: this.backgroundImage.width,
+                height: this.backgroundImage.height,
                 pos: 'absolute',
                 left: '50%',
                 top: '50%',
                 marginLeft: -1 * this.backgroundImage.width / 2,
-                marginTop: -1 * this.backgroundImage.height / 2
+                marginTop: -1 * this.backgroundImage.height / 2,
+                isAltKeyPress: false
             }
         },
-        mounted() {
-            renderTransparencyGrid(this.$refs.transparencyGrid);
-
-            this.$nextTick(function () {
-                let context = this.$refs.canvases[0].getContext('2d');
-                this.$refs.canvases[0].width = this.width;
-                this.$refs.canvases[0].height = this.height;
-                context.drawImage(this.backgroundImage, 0, 0);
-            })
-        },
         computed: {
+            realtimeImage () {
+                let image = new Image();
+                let context = this.combinedCanvas.getContext('2d');
+                context.clearRect(0, 0, this.width, this.height);
+                this.layerImages.forEach(function (layerimage) {
+                    if (layerimage) {
+                        context.drawImage(layerimage.image, layerimage.x, layerimage.y);
+                    }
+                });
+
+                image.src = this.combinedCanvas.toDataURL();
+                return image;
+            },
+            classOfCanvases () {
+                return this.isAltKeyPress ? this.activeTool + '-alt' : this.activeTool;
+            },
+            activeTool() {
+                return this.$store.getters.activeTool
+            },
             changeScaling: {
                 get() {
                     return this.scaling;
@@ -92,7 +96,7 @@
                     this.scaling = this.scaling > 32 ? 32 : this.scaling;
                     this.scaling = this.scaling < 0.1 ? 0.1 : this.scaling;
 
-                    //强制重新渲染，修复滚动条不出现或不消失的 Bug
+                    //强制重新渲染，修复滚动条在内容超出时不出现或在不超出时不消失的 Bug
                     this.pos = 'relative';
                     let _this = this;
                     setTimeout(function () {
@@ -100,16 +104,10 @@
                     }, 0);
                 }
             },
-            width() {
-                return this.backgroundImage.width;
-            },
-            height() {
-                return this.backgroundImage.height;
-            },
             canvasesStyle() {
                 return {
                     position: this.pos,
-//                    cursor: this.$store.getters.activeTool.cursor,
+                    cursor: this.$store.getters.activeTool.cursor,
                     width: this.backgroundImage.width + "px",
                     height: this.backgroundImage.height + "px",
                     left: this.left,
@@ -123,24 +121,38 @@
                 return this.width + '×' + this.height + ' @ ' + Math.round(this.scaling * 100) + '%'
             }
         },
+
+        mounted() {
+            renderTransparencyGrid(this.$refs.transparencyGrid);
+
+            let _this = this;
+            window.addEventListener('keydown', function (event) {
+                if (event.altKey) {
+                    _this.isAltKeyPress = true;
+                }
+            }, false);
+
+            window.addEventListener('keyup', function () {
+                _this.isAltKeyPress = false;
+            }, false);
+        },
         methods: {
-            update() {
-                let format = {
-                    png: 'png',
-                    jpg: 'jpeg',
-                    webp: 'webp'
-                };
-                this.src = this.canvas.toDataURL('image/png');
+            update(layerId, image) {
+//                let pos = this.getLayerPosition(layerId);
+//                this.set(this.layerImages, layerId, {x: pos.x, y: pos.y, image: image});
             },
             close() {
                 this.$emit('close');
+            },
+            getLayerPosition(layerId) {
+                return getPositionOnParent(this.$refs.canvases[layerId], this.$refs.canvasContainer);
             },
             scalingUp(increament, X, Y) {
                 let oldScaling = this.scaling;
                 this.changeScaling += increament;
 
-                let isInnerOfWidth = this.width * this.scaling < this.$refs.board.offsetWidth;
-                let isInnerOfHight = this.height * this.scaling < this.$refs.board.offsetHeight;
+                let isInnerOfWidth = (this.width * this.scaling) < this.$refs.board.offsetWidth;
+                let isInnerOfHight = (this.height * this.scaling) < this.$refs.board.offsetHeight;
 
                 if (isInnerOfWidth) {
                     this.left = '50%';
@@ -157,18 +169,18 @@
                 } else {
                     this.top = 0;
                     this.marginTop = 20;
-//                    this.$refs.board.scrollTop = this.scaling * (this.$refs.board.scrollTop + Y) / oldScaling - Y;
+//                  this.$refs.board.scrollTop = this.scaling * (this.$refs.board.scrollTop + Y) / oldScaling - Y;
                 }
             },
             onmouseup(event) {
 
             },
             onmousedown(event) {
-                let activeTool = this.$store.getters.activeTool;
-                activeTool.onmousedown && activeTool.onmousedown(event, this.$refs.canvas);
-            },
-            onkeydown(event) {
-
+                if (this.activeTool === 'eyedropper') {
+                    let context = this.combinedCanvas.getContext('2d');
+                    let imageData = context.getImageData(event.offsetX, event.offsetY, 1, 1);
+                    this.$store.commit('setForeColor', color.RGB2HEX(imageData.data));
+                }
             },
             onwheel(event) {
                 let board = this.$refs.board;
@@ -193,6 +205,46 @@
                 }
             },
         }
+    }
+
+    function renderTransparencyGrid(canvas) {
+        let context = canvas.getContext("2d");
+
+        let canvasForPattern = document.createElement('canvas');
+        let contextForPattern = canvasForPattern.getContext('2d');
+        const rectSize = 10;
+        canvasForPattern.width = rectSize * 2;
+        canvasForPattern.height = rectSize * 2;
+
+        contextForPattern.fillStyle = '#ffffff';
+        contextForPattern.fillRect(0, 0, rectSize, rectSize);
+        contextForPattern.fillStyle = '#cccccc';
+        contextForPattern.fillRect(rectSize, 0, rectSize, rectSize);
+
+        contextForPattern.fillStyle = '#cccccc';
+        contextForPattern.fillRect(0, rectSize, rectSize, rectSize);
+        contextForPattern.fillStyle = '#ffffff';
+        contextForPattern.fillRect(rectSize, rectSize, rectSize, rectSize);
+
+        context.fillStyle = context.createPattern(canvasForPattern, 'repeat');
+        context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function getPositionOnParent(element, parentElement) {
+        let actualLeft = element.offsetLeft;
+        let actualTop = element.offsetTop;
+
+        let current = element.offsetParent;
+        while (current !== parentElement) {
+            actualLeft += current.offsetLeft;
+            actualTop += current.offsetTop;
+            current = current.offsetParent;
+        }
+
+        return {
+            x: actualLeft,
+            y: actualTop
+        };
     }
 </script>
 
@@ -259,8 +311,14 @@
         top: 0;
         left: 0;
     }
-    .eyedropper, ul.canvases{
-        cursor: url("../cursor/Eyedropper.cur"), auto
+    .eyedropper, .eyedropper-alt{
+        cursor: url("../cursor/Eyedropper.ico") 3 15, auto
+    }
+    .zoom{
+        cursor: zoom-in;
+    }
+    .zoom-alt{
+        cursor: zoom-out;
     }
     .status{
         position: absolute;

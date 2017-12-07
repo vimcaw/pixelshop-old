@@ -1,38 +1,36 @@
 
 export default {
-    Move: {
+    move: {
         icon: 'icon-yidong'
     },
-    Crop: {
+    crop: {
         icon: 'icon-tupiancaijian'
     },
-    Eyedropper: {
+    eyedropper: {
         icon: 'icon-icon-straw',
-        cursor: 'url("./cursor/Eyedropper.cur"), auto',
         onclick(event) {
-        // let x = $('#pos-x').innerText,
-        //     y = $('#pos-y').innerText,
-        //     imageData = documentDirector.activeDocument.context.getImageData(x, y, 1, 1);
-        //
-        // color.setForeColor(color.RGB2HEX(imageData.data));
-    }
+            let x = $('#pos-x').innerText,
+                y = $('#pos-y').innerText,
+                imageData = documentDirector.activeDocument.context.getImageData(x, y, 1, 1);
+            color.setForeColor(color.RGB2HEX(imageData.data));
+        }
     },
-    Blush: {
+    blush: {
         icon: 'icon-icon'
     },
-    Eraser: {
+    eraser: {
         icon: 'icon-xiangpi'
     },
-    Text: {
+    text: {
         icon: 'icon-wenben'
     },
-    Rect: {
+    rect: {
         icon: 'icon-juxing'
     },
-    Hand: {
+    hand: {
         icon: 'icon-hand'
     },
-    Zoom: {
+    zoom: {
         icon: 'icon-fangdajing',
         cursor: 'zoom-in',
         onkeydown() {

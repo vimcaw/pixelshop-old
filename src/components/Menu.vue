@@ -1,11 +1,10 @@
 <template>
     <nox-menu>
         <nox-ml title="File">
-            <nox-mi hotkey="Alt+N">New...</nox-mi>
+            <nox-mi hotkey="Alt+N" @click="openWindow('New')">New...</nox-mi>
             <nox-mi @click="openFromLocal" hotkey="Alt+O">Open From Local...</nox-mi>
             <nox-mi @click="openWindow('Open Picture By URL')" hotkey="Alt+U">Open From URL...</nox-mi>
-            <nox-mi divide>Close</nox-mi>
-            <nox-mi>Save</nox-mi>
+            <nox-mi @click="save">Save</nox-mi>
             <nox-mi>Save as...</nox-mi>
         </nox-ml>
         <nox-ml title="Edit">
@@ -35,6 +34,12 @@
         methods: {
             openWindow(windowTitle) {
                 Nox.openWindow(windowTitle);
+            },
+            save() {
+                let download = document.createElement('a');
+                download.download = this.$store.getters.activeDocument.fileName;
+                download.href = this.$store.getters.activeDocument.image.src;
+                download.click();
             }
         }
     }

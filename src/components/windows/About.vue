@@ -3,7 +3,7 @@
         <div class="logo">
             <img src="../../image/icon.png" alt="">
             <h1>Pixelshop</h1>
-            <p class="version">V0.4.0</p>
+            <p class="version">V0.4.2</p>
         </div>
 
         <hr>

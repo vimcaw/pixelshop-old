@@ -1,8 +1,7 @@
-import tools from '../../tools'
 
 export default {
     state: {
-        activeTool: tools.Move
+        activeTool: 'move'
     },
     getters: {
         activeTool: state => state.activeTool,

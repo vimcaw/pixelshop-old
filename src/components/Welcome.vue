@@ -21,13 +21,13 @@
     </div>
     <ul class="handle">
         <li>
-            <button type="button" id="welcome-new">New...</button>
+            <button type="button" id="welcome-new" @click="openWindow('New')">New...</button>
         </li>
         <li>
             <button type="button" id="welcome-openFromLocal" @click="openFromLocal">Open From Local...</button>
         </li>
         <li>
-            <button type="button" id="welcome-openFromUrl">Open From URL...</button>
+            <button type="button" id="welcome-openFromUrl" @click="openWindow('Open Picture By URL')">Open From URL...</button>
         </li>
     </ul>
     <div class="recent-file">
@@ -49,9 +49,9 @@
 
 
 <script>
-import {$} from '../element';
 import {mapGetters} from 'vuex';
 import instruction from '../instruction';
+import Nox from '../nox';
 
 export default {
     mixins: [instruction],
@@ -61,6 +61,9 @@ export default {
     methods: {
         open(src, fileName) {
             this.$store.commit('openImage', {src: src, fileName: fileName});
+        },
+        openWindow(windowName) {
+            Nox.openWindow(windowName);
         },
         remove(fileName) {
             this.$store.commit('removeRecentFile', fileName);

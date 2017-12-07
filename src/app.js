@@ -121,3 +121,7 @@ bindWindowControlClick($('.window-control'), windowCommand);
 window.oncontextmenu = function () {
 	return false;
 };
+
+String.prototype.firstUpperCase=function(){
+    return this.replace(/^\S/,function(s){return s.toUpperCase();});
+}

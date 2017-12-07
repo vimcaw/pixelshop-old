@@ -89,6 +89,7 @@
         created() {
             let _this = this;
             windowEvent.$on('openWindow', function (windowTitle, args) {
+
                 if (_this.title === windowTitle) {
                     _this.isShow = true;
                     if (args) _this.args = args;

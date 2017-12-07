@@ -26,8 +26,8 @@
     import {mapGetters} from 'vuex';
     import Nox from '../nox';
 
-    import ColorPicker from './windows/color-picker.vue';
-    import About from './windows/about.vue';
+    import ColorPicker from './windows/ColorPicker.vue';
+    import About from './windows/About.vue';
 
     import Welcome from './Welcome.vue';
     import MenuBar from './Menu.vue';
@@ -35,7 +35,7 @@
     import Tool from './Tool.vue';
     import Panel from './Panel.vue';
     import DesignBoard from './DocumentManager.vue';
-    import WindowGroup from './window-group.vue';
+    import WindowGroup from './WindowGroup.vue';
 
 
     export default {

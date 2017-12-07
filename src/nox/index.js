@@ -8,7 +8,7 @@ let components = [Menu, Window];
 components.forEach(function (module) {
     Object.keys(module).forEach(function (key) {
         Vue.component(key, module[key]);
-    })
+    });
 });
 
 export default {

@@ -83,7 +83,7 @@ module.exports = {
             },
             // 图片文件的加载配置增加一个exclude参数
             {
-                test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz|cur)(\?.+)?$/,
+                test: /\.(png|jpg|jpeg|gif|ico|eot|ttf|woff|woff2|svg|svgz|cur)(\?.+)?$/,
 
                 // 排除favicon.png, 因为它已经由上面的loader处理了. 如果不排除掉, 它会被这个loader再处理一遍
                 exclude: /favicon\.png$/,

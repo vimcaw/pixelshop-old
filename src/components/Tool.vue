@@ -4,9 +4,9 @@
             <li v-for="toolName in toolNames">
                 <div
                         class="iconfont"
-                        :class="tools[toolName].icon + (tools[toolName] == activeTool ? ' active': '')"
-                        :title="toolName + ' Tool'"
-                        @mousedown="switchTool(tools[toolName])">
+                        :class="tools[toolName].icon + (toolName === activeTool ? ' active': '')"
+                        :title="toolName.firstUpperCase() + ' Tool'"
+                        @mousedown="switchTool(toolName)">
                 </div>
             </li>
         </ul>

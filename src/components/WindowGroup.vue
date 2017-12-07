@@ -22,19 +22,24 @@
         <nox-window title="Color Picker">
             <win-color-picker slot-scope="props" :colorType="props.args"></win-color-picker>
         </nox-window>
+        <nox-window title="New">
+            <win-new></win-new>
+        </nox-window>
     </div>
 </template>
 
 <script>
-    import About from './windows/about.vue'
-    import ColorPicker from './windows/color-picker.vue';
+    import About from './windows/About.vue'
+    import ColorPicker from './windows/ColorPicker.vue';
+    import New from './windows/New.vue';
 
     import Nox from '../nox'
 
     export default {
         components: {
             'win-about': About,
-            'win-color-picker': ColorPicker
+            'win-color-picker': ColorPicker,
+            'win-new': New
         },
         data: function () {
             return {
