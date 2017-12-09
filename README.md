@@ -4,7 +4,7 @@
 
 Pixelshop is A small Photoshop, Vue.js-based web application, which contains the most commonly used Photoshop features.
 ```diff
-- This Project is developing, because just spend spare time, I predict it will acomplish main function on Dec, 2017.
+- This Project is developing, because I just spend a little spare time, it will update very slowly.
 ```
 preview: https://vimcaw.github.io/pixelshop/dist/index.html
 
@@ -12,7 +12,7 @@ preview: https://vimcaw.github.io/pixelshop/dist/index.html
 
 Pixelshop 是一个小型的 Photoshop，一个基于 Vue.js 实现的 Web 应用，它包含了 Photoshop 最常用的功能。
 ```diff
-- 此项目目前还在开发中，由于只花费业余时间进行开发，预计 2017 年 12 月完成主要功能。
+- 此项目目前还在开发中，由于只花费一点点业余时间进行开发，更新将非常缓慢。
 ```
 预览：https://vimcaw.github.io/pixelshop/dist/index.html
 
